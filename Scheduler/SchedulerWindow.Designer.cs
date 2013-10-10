@@ -34,14 +34,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.NewEventDatePicker = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.DescriptionTextBox = new System.Windows.Forms.TextBox();
+            this.NewEventTimePicker = new System.Windows.Forms.DateTimePicker();
             this.AddEventButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.CancellationComboBox = new System.Windows.Forms.ComboBox();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.CancButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -155,12 +155,12 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "TimeUntil";
             // 
-            // dateTimePicker1
+            // NewEventDatePicker
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(18, 447);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 10;
+            this.NewEventDatePicker.Location = new System.Drawing.Point(18, 447);
+            this.NewEventDatePicker.Name = "NewEventDatePicker";
+            this.NewEventDatePicker.Size = new System.Drawing.Size(200, 20);
+            this.NewEventDatePicker.TabIndex = 10;
             // 
             // label5
             // 
@@ -171,25 +171,28 @@
             this.label5.TabIndex = 11;
             this.label5.Text = "Add Event";
             // 
-            // textBox1
+            // DescriptionTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(18, 421);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(302, 20);
-            this.textBox1.TabIndex = 12;
-            this.textBox1.Text = "Description";
+            this.DescriptionTextBox.Location = new System.Drawing.Point(18, 421);
+            this.DescriptionTextBox.Name = "DescriptionTextBox";
+            this.DescriptionTextBox.Size = new System.Drawing.Size(302, 20);
+            this.DescriptionTextBox.TabIndex = 12;
+            this.DescriptionTextBox.Text = "Description goes here";
+            this.DescriptionTextBox.TextChanged += new System.EventHandler(this.DescriptionTextBox_TextChanged);
+            this.DescriptionTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DescriptionTextBox_MouseDown);
             // 
-            // dateTimePicker2
+            // NewEventTimePicker
             // 
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePicker2.Location = new System.Drawing.Point(224, 447);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.ShowUpDown = true;
-            this.dateTimePicker2.Size = new System.Drawing.Size(96, 20);
-            this.dateTimePicker2.TabIndex = 13;
+            this.NewEventTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.NewEventTimePicker.Location = new System.Drawing.Point(224, 447);
+            this.NewEventTimePicker.Name = "NewEventTimePicker";
+            this.NewEventTimePicker.ShowUpDown = true;
+            this.NewEventTimePicker.Size = new System.Drawing.Size(96, 20);
+            this.NewEventTimePicker.TabIndex = 13;
             // 
             // AddEventButton
             // 
+            this.AddEventButton.Enabled = false;
             this.AddEventButton.Location = new System.Drawing.Point(326, 444);
             this.AddEventButton.Name = "AddEventButton";
             this.AddEventButton.Size = new System.Drawing.Size(75, 23);
@@ -215,30 +218,33 @@
             this.CancellationComboBox.Name = "CancellationComboBox";
             this.CancellationComboBox.Size = new System.Drawing.Size(200, 21);
             this.CancellationComboBox.TabIndex = 16;
+            this.CancellationComboBox.SelectionChangeCommitted += new System.EventHandler(this.CancellationComboBox_SelectionChangeCommitted);
+            this.CancellationComboBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CancellationComboBox_MouseDown);
             // 
-            // CancelButton
+            // CancButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(18, 525);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 17;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.CancButton.Enabled = false;
+            this.CancButton.Location = new System.Drawing.Point(18, 525);
+            this.CancButton.Name = "CancButton";
+            this.CancButton.Size = new System.Drawing.Size(89, 23);
+            this.CancButton.TabIndex = 17;
+            this.CancButton.Text = "Cancel  Event";
+            this.CancButton.UseVisualStyleBackColor = true;
+            this.CancButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // SchedulerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 700);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.CancButton);
             this.Controls.Add(this.CancellationComboBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.AddEventButton);
-            this.Controls.Add(this.dateTimePicker2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.NewEventTimePicker);
+            this.Controls.Add(this.DescriptionTextBox);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.NewEventDatePicker);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -261,14 +267,14 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker NewEventDatePicker;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.TextBox DescriptionTextBox;
+        private System.Windows.Forms.DateTimePicker NewEventTimePicker;
         private System.Windows.Forms.Button AddEventButton;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox CancellationComboBox;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button CancButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateAt;
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeAt;
