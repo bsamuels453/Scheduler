@@ -11,8 +11,8 @@ using System.Windows.Forms;
 
 namespace Scheduler{
     public partial class SchedulerWindow : Form{
+        readonly List<DisplayEvent> _deployedWarnings;
         readonly List<DisplayEvent> _warningsToDeploy;
-        readonly List<DisplayEvent> _deployedWarnings; 
 
         void DailyReminder(){
             while (true){
@@ -30,6 +30,7 @@ namespace Scheduler{
 
                 if (upcomingEventDetected){
                     UpcomingEventDetected();
+                    NotifyIcon.Icon = new Icon("Content/unhappyface.ico");
                 }
                 else{
                     NotifyIcon.Icon = new Icon("Content/happyface.ico");
@@ -47,8 +48,7 @@ namespace Scheduler{
             }
         }
 
-        void UpcomingEventDetected() {
-            BlinkIcon();
+        void UpcomingEventDetected(){
             var lastInput = GetLastInputTime();
             if (lastInput < 10){
                 if (_warningsToDeploy.Count > 0){
@@ -59,22 +59,10 @@ namespace Scheduler{
             }
         }
 
-        void BlinkIcon(){
-            if (_warningIconDisplayed) {
-                NotifyIcon.Icon = new Icon("Content/redwarn.ico");
-                _warningIconDisplayed = false;
-
-            }
-            else {
-                NotifyIcon.Icon = new Icon("Content/unhappyface.ico");
-                _warningIconDisplayed = true;
-            }
-        }
-
         [DllImport("user32.dll")]
         static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
-        static int GetLastInputTime() {
+        static int GetLastInputTime(){
             int idleTime = 0;
             LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
             lastInputInfo.cbSize = Marshal.SizeOf(lastInputInfo);
@@ -82,23 +70,25 @@ namespace Scheduler{
 
             int envTicks = Environment.TickCount;
 
-            if (GetLastInputInfo(ref lastInputInfo)) {
-                int lastInputTick = (int)lastInputInfo.dwTime;
+            if (GetLastInputInfo(ref lastInputInfo)){
+                int lastInputTick = (int) lastInputInfo.dwTime;
 
                 idleTime = envTicks - lastInputTick;
             }
 
-            return ((idleTime > 0) ? (idleTime / 1000) : idleTime);
+            return ((idleTime > 0) ? (idleTime/1000) : idleTime);
         }
+
+        #region Nested type: LASTINPUTINFO
 
         [StructLayout(LayoutKind.Sequential)]
-        struct LASTINPUTINFO {
-            public static readonly int SizeOf = Marshal.SizeOf(typeof(LASTINPUTINFO));
+        struct LASTINPUTINFO{
+            public static readonly int SizeOf = Marshal.SizeOf(typeof (LASTINPUTINFO));
 
-            [MarshalAs(UnmanagedType.U4)]
-            public int cbSize;
-            [MarshalAs(UnmanagedType.U4)]
-            public UInt32 dwTime;
+            [MarshalAs(UnmanagedType.U4)] public int cbSize;
+            [MarshalAs(UnmanagedType.U4)] public UInt32 dwTime;
         }
+
+        #endregion
     }
 }
