@@ -25,10 +25,6 @@
         private void InitializeComponent() {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.EventTable = new System.Windows.Forms.DataGridView();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -42,6 +38,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.CancellationComboBox = new System.Windows.Forms.ComboBox();
             this.CancButton = new System.Windows.Forms.Button();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,42 +76,6 @@
             this.EventTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.EventTable.Size = new System.Drawing.Size(471, 186);
             this.EventTable.TabIndex = 3;
-            // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.HeaderText = "Column1";
-            this.Description.MinimumWidth = 250;
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
-            this.Description.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // DateAt
-            // 
-            this.DateAt.HeaderText = "Column1";
-            this.DateAt.MinimumWidth = 70;
-            this.DateAt.Name = "DateAt";
-            this.DateAt.ReadOnly = true;
-            this.DateAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DateAt.Width = 70;
-            // 
-            // TimeAt
-            // 
-            this.TimeAt.HeaderText = "Column1";
-            this.TimeAt.MinimumWidth = 60;
-            this.TimeAt.Name = "TimeAt";
-            this.TimeAt.ReadOnly = true;
-            this.TimeAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TimeAt.Width = 60;
-            // 
-            // TimeUntil
-            // 
-            this.TimeUntil.HeaderText = "Column1";
-            this.TimeUntil.MinimumWidth = 70;
-            this.TimeUntil.Name = "TimeUntil";
-            this.TimeUntil.ReadOnly = true;
-            this.TimeUntil.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TimeUntil.Width = 70;
             // 
             // monthCalendar1
             // 
@@ -177,7 +141,7 @@
             this.DescriptionTextBox.Name = "DescriptionTextBox";
             this.DescriptionTextBox.Size = new System.Drawing.Size(302, 20);
             this.DescriptionTextBox.TabIndex = 12;
-            this.DescriptionTextBox.Text = "Description goes here";
+            this.DescriptionTextBox.Text = "Description...";
             this.DescriptionTextBox.TextChanged += new System.EventHandler(this.DescriptionTextBox_TextChanged);
             this.DescriptionTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DescriptionTextBox_MouseDown);
             // 
@@ -232,6 +196,42 @@
             this.CancButton.UseVisualStyleBackColor = true;
             this.CancButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.HeaderText = "Column1";
+            this.Description.MinimumWidth = 230;
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
+            this.Description.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // DateAt
+            // 
+            this.DateAt.HeaderText = "Column1";
+            this.DateAt.MinimumWidth = 70;
+            this.DateAt.Name = "DateAt";
+            this.DateAt.ReadOnly = true;
+            this.DateAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DateAt.Width = 70;
+            // 
+            // TimeAt
+            // 
+            this.TimeAt.HeaderText = "Column1";
+            this.TimeAt.MinimumWidth = 60;
+            this.TimeAt.Name = "TimeAt";
+            this.TimeAt.ReadOnly = true;
+            this.TimeAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TimeAt.Width = 60;
+            // 
+            // TimeUntil
+            // 
+            this.TimeUntil.HeaderText = "Column1";
+            this.TimeUntil.MinimumWidth = 90;
+            this.TimeUntil.Name = "TimeUntil";
+            this.TimeUntil.ReadOnly = true;
+            this.TimeUntil.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TimeUntil.Width = 90;
+            // 
             // SchedulerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -253,6 +253,9 @@
             this.Controls.Add(this.EventTable);
             this.Name = "SchedulerWindow";
             this.Text = "Scheduler";
+            this.Activated += new System.EventHandler(this.SchedulerWindow_Activated);
+            this.Deactivate += new System.EventHandler(this.SchedulerWindow_Deactivate);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SchedulerWindow_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

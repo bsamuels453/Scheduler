@@ -2,6 +2,8 @@
 
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 #endregion
@@ -9,6 +11,9 @@ using System.Windows.Forms;
 namespace Scheduler{
     public partial class SchedulerWindow : Form{
         readonly Scheduler _scheduler;
+
+        Task _fieldUpdateTask;
+        bool _killFieldUpdateTask;
 
         public SchedulerWindow(){
             InitializeComponent();
@@ -56,7 +61,7 @@ namespace Scheduler{
         }
 
         void DescriptionTextBox_MouseDown(object sender, MouseEventArgs e){
-            if (DescriptionTextBox.Text.Equals("Description goes here")){
+            if (DescriptionTextBox.Text.Equals("Description...")){
                 DescriptionTextBox.Text = "";
             }
         }
@@ -72,7 +77,7 @@ namespace Scheduler{
         }
 
         void DescriptionTextBox_TextChanged(object sender, EventArgs e){
-            if (!DescriptionTextBox.Text.Equals("Description goes here") && !DescriptionTextBox.Text.Equals("")){
+            if (!DescriptionTextBox.Text.Equals("Description...") && !DescriptionTextBox.Text.Equals("")){
                 AddEventButton.Enabled = true;
             }
             else{
@@ -90,6 +95,33 @@ namespace Scheduler{
                 EventTable[2, i].Value = sorted[i].Time;
                 EventTable[3, i].Value = sorted[i].TimeUntil;
             }
+        }
+
+        void UpdateFieldsLoop(){
+            while (true){
+                Thread.Sleep(50);
+                if (_killFieldUpdateTask){
+                    break;
+                }
+                this.BeginInvoke((Action) UpdateSchedulerTable);
+            }
+        }
+
+
+        void SchedulerWindow_Activated(object sender, EventArgs e){
+            _fieldUpdateTask = new Task(UpdateFieldsLoop);
+            _killFieldUpdateTask = false;
+            _fieldUpdateTask.Start();
+        }
+
+        void SchedulerWindow_Deactivate(object sender, EventArgs e){
+            _killFieldUpdateTask = true;
+            _fieldUpdateTask.Wait();
+        }
+
+        void SchedulerWindow_FormClosing(object sender, FormClosingEventArgs e){
+            _killFieldUpdateTask = true;
+            _fieldUpdateTask.Wait();
         }
     }
 }
