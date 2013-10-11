@@ -44,7 +44,7 @@ namespace Scheduler{
 
         void UpdateNotifyIconTooltip(List<DisplayEvent> events){
             var sorted = events.OrderBy(e => e.EventDateTime).ToArray();
-            if (sorted.Length > 0) {
+            if (sorted.Length > 0){
                 var iconText = "";
                 iconText += "Next event: ";
                 iconText += sorted[0].Description + Environment.NewLine;
@@ -56,7 +56,7 @@ namespace Scheduler{
             else{
                 NotifyIcon.Text = "No events scheduled";
             }
-            
+
             int g = 5;
         }
 

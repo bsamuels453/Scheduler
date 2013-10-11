@@ -21,7 +21,6 @@ namespace Scheduler{
         Task _fieldUpdateTask;
         bool _killFieldUpdateTask;
 
-
         public SchedulerWindow(){
             InitializeComponent();
             this.MaximizeBox = false;
@@ -47,28 +46,6 @@ namespace Scheduler{
             _defaultStyle.SelectionBackColor = Color.LightGreen;
         }
 
-
-        void CancelButton_Click(object sender, EventArgs e){
-            var eventToCancel = CancellationComboBox.Text;
-            _scheduler.CancelEvent(eventToCancel);
-            ResetEventCancelFields();
-            UpdateSchedulerTable();
-            UpdateCalendar();
-        }
-
-        void AddEventButton_Click(object sender, EventArgs e){
-            var date = NewEventDatePicker.Value;
-            var time = NewEventTimePicker.Value;
-
-            var eventDatetime = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
-
-            _scheduler.AddEvent(DescriptionTextBox.Text, eventDatetime);
-
-            ResetEventAdditionFields();
-            UpdateSchedulerTable();
-            UpdateCalendar();
-        }
-
         void ResetEventCancelFields(){
             CancellationComboBox.DataSource = null;
             CancellationComboBox.SelectedIndex = -1;
@@ -78,40 +55,8 @@ namespace Scheduler{
         void ResetEventAdditionFields(){
             DescriptionTextBox.Text = "Description...";
             NewEventDatePicker.Value = DateTime.Now;
-            NewEventTimePicker.Value = new DateTime(2013,1,1,8,0,0,0);
+            NewEventTimePicker.Value = new DateTime(2013, 1, 1, 8, 0, 0, 0);
             AddEventButton.Enabled = false;
-        }
-
-        void CancellationComboBox_MouseDown(object sender, MouseEventArgs _){
-            var events = _scheduler.GetActiveEvents();
-            var eventNames = events.Select(e => e.Description).ToList();
-            eventNames.Insert(0, "");
-            CancellationComboBox.DataSource = eventNames;
-        }
-
-        void DescriptionTextBox_MouseDown(object sender, MouseEventArgs e){
-            if (DescriptionTextBox.Text.Equals("Description...")){
-                DescriptionTextBox.Text = "";
-            }
-        }
-
-        void CancellationComboBox_SelectionChangeCommitted(object sender, EventArgs e){
-            UpdateSchedulerTable();
-            if (CancellationComboBox.Text == ""){
-                CancButton.Enabled = false;
-            }
-            else{
-                CancButton.Enabled = true;
-            }
-        }
-
-        void DescriptionTextBox_TextChanged(object sender, EventArgs e){
-            if (!DescriptionTextBox.Text.Equals("Description...") && !DescriptionTextBox.Text.Equals("")){
-                AddEventButton.Enabled = true;
-            }
-            else{
-                AddEventButton.Enabled = false;
-            }
         }
 
         void UpdateCalendar(){
@@ -166,37 +111,98 @@ namespace Scheduler{
             }
         }
 
+        #region main ui delegs
 
-        void SchedulerWindow_Activated(object sender, EventArgs e){
+        void CancelButtonClick(object sender, EventArgs e){
+            var eventToCancel = CancellationComboBox.Text;
+            _scheduler.CancelEvent(eventToCancel);
+            ResetEventCancelFields();
+            UpdateSchedulerTable();
+            UpdateCalendar();
+        }
+
+        void AddEventButtonClick(object sender, EventArgs e){
+            var date = NewEventDatePicker.Value;
+            var time = NewEventTimePicker.Value;
+
+            var eventDatetime = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
+            if (eventDatetime < DateTime.Now){
+                MessageBox.Show("You need to select a date and time that is in the future");
+                return;
+            }
+            _scheduler.AddEvent(DescriptionTextBox.Text, eventDatetime);
+
+            ResetEventAdditionFields();
+            UpdateSchedulerTable();
+            UpdateCalendar();
+        }
+
+        void CancellationComboBoxMouseDown(object sender, MouseEventArgs _){
+            var events = _scheduler.GetActiveEvents();
+            var eventNames = events.Select(e => e.Description).ToList();
+            eventNames.Insert(0, "");
+            CancellationComboBox.DataSource = eventNames;
+        }
+
+        void DescriptionTextBoxMouseDown(object sender, MouseEventArgs e){
+            if (DescriptionTextBox.Text.Equals("Description...")){
+                DescriptionTextBox.Text = "";
+            }
+        }
+
+        void CancellationComboBoxSelectionChangeCommitted(object sender, EventArgs e){
+            UpdateSchedulerTable();
+            if (CancellationComboBox.Text == ""){
+                CancButton.Enabled = false;
+            }
+            else{
+                CancButton.Enabled = true;
+            }
+        }
+
+        void DescriptionTextBoxTextChanged(object sender, EventArgs e){
+            if (!DescriptionTextBox.Text.Equals("Description...") && !DescriptionTextBox.Text.Equals("")){
+                AddEventButton.Enabled = true;
+            }
+            else{
+                AddEventButton.Enabled = false;
+            }
+        }
+
+        #endregion
+
+        #region window/notifyicon stuff
+
+        void SchedulerWindowActivated(object sender, EventArgs e){
             _fieldUpdateTask = new Task(UpdateFieldsLoop);
             _killFieldUpdateTask = false;
             _fieldUpdateTask.Start();
         }
 
-        void SchedulerWindow_Deactivate(object sender, EventArgs e){
+        void SchedulerWindowDeactivate(object sender, EventArgs e){
             _killFieldUpdateTask = true;
             _fieldUpdateTask.Wait();
         }
 
-        void SchedulerWindow_FormClosing(object sender, FormClosingEventArgs e){
+        void SchedulerWindowFormClosing(object sender, FormClosingEventArgs e){
             _killFieldUpdateTask = true;
             _fieldUpdateTask.Wait();
             NotifyIcon.Icon = null;
         }
 
-        void notifyIcon1_DoubleClick(object sender, EventArgs e){
+        void NotifyIcon1DoubleClick(object sender, EventArgs e){
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
         }
 
-        void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e){
+        void NotifyIcon1MouseDoubleClick(object sender, MouseEventArgs e){
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
         }
 
-        void SchedulerWindow_Resize(object sender, EventArgs e){
+        void SchedulerWindowResize(object sender, EventArgs e){
             if (FormWindowState.Minimized == this.WindowState){
                 NotifyIcon.Visible = true;
                 this.Hide();
@@ -207,10 +213,12 @@ namespace Scheduler{
             }
         }
 
-        void NotifyIcon_MouseClick(object sender, MouseEventArgs e){
+        void NotifyIconMouseClick(object sender, MouseEventArgs e){
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
         }
+
+        #endregion
     }
 }

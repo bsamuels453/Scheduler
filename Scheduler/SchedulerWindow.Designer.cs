@@ -200,8 +200,8 @@
             this.DescriptionTextBox.Size = new System.Drawing.Size(302, 20);
             this.DescriptionTextBox.TabIndex = 12;
             this.DescriptionTextBox.Text = "Description...";
-            this.DescriptionTextBox.TextChanged += new System.EventHandler(this.DescriptionTextBox_TextChanged);
-            this.DescriptionTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DescriptionTextBox_MouseDown);
+            this.DescriptionTextBox.TextChanged += new System.EventHandler(this.DescriptionTextBoxTextChanged);
+            this.DescriptionTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DescriptionTextBoxMouseDown);
             // 
             // NewEventTimePicker
             // 
@@ -221,7 +221,7 @@
             this.AddEventButton.TabIndex = 14;
             this.AddEventButton.Text = "Add Event";
             this.AddEventButton.UseVisualStyleBackColor = true;
-            this.AddEventButton.Click += new System.EventHandler(this.AddEventButton_Click);
+            this.AddEventButton.Click += new System.EventHandler(this.AddEventButtonClick);
             // 
             // label6
             // 
@@ -240,8 +240,8 @@
             this.CancellationComboBox.Name = "CancellationComboBox";
             this.CancellationComboBox.Size = new System.Drawing.Size(200, 21);
             this.CancellationComboBox.TabIndex = 16;
-            this.CancellationComboBox.SelectionChangeCommitted += new System.EventHandler(this.CancellationComboBox_SelectionChangeCommitted);
-            this.CancellationComboBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CancellationComboBox_MouseDown);
+            this.CancellationComboBox.SelectionChangeCommitted += new System.EventHandler(this.CancellationComboBoxSelectionChangeCommitted);
+            this.CancellationComboBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CancellationComboBoxMouseDown);
             // 
             // CancButton
             // 
@@ -252,16 +252,16 @@
             this.CancButton.TabIndex = 17;
             this.CancButton.Text = "Cancel  Event";
             this.CancButton.UseVisualStyleBackColor = true;
-            this.CancButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.CancButton.Click += new System.EventHandler(this.CancelButtonClick);
             // 
             // NotifyIcon
             // 
             this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
             this.NotifyIcon.Text = "Scheduler";
             this.NotifyIcon.Visible = true;
-            this.NotifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
-            this.NotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseClick);
-            this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.NotifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon1DoubleClick);
+            this.NotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIconMouseClick);
+            this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon1MouseDoubleClick);
             // 
             // SchedulerWindow
             // 
@@ -284,10 +284,10 @@
             this.Controls.Add(this.EventTable);
             this.Name = "SchedulerWindow";
             this.Text = "Scheduler";
-            this.Activated += new System.EventHandler(this.SchedulerWindow_Activated);
-            this.Deactivate += new System.EventHandler(this.SchedulerWindow_Deactivate);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SchedulerWindow_FormClosing);
-            this.Resize += new System.EventHandler(this.SchedulerWindow_Resize);
+            this.Activated += new System.EventHandler(this.SchedulerWindowActivated);
+            this.Deactivate += new System.EventHandler(this.SchedulerWindowDeactivate);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SchedulerWindowFormClosing);
+            this.Resize += new System.EventHandler(this.SchedulerWindowResize);
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
