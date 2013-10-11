@@ -16,8 +16,11 @@ namespace Scheduler{
         readonly List<Event> _events;
 
         public Scheduler(){
-            if (File.Exists(_savedEventsPath)){
+            if (File.Exists(_savedEventsPath)) {
                 _events = LoadEvents();
+            }
+            else{
+                _events = new List<Event>();
             }
         }
 
