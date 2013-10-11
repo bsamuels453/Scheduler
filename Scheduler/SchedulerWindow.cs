@@ -19,11 +19,13 @@ namespace Scheduler{
         readonly DataGridViewCellStyle _warningStyle;
         Task _fieldUpdateTask;
         bool _killFieldUpdateTask;
+        bool _warningIconDisplayed;
 
         public SchedulerWindow(){
             InitializeComponent();
             _scheduler = new Scheduler();
             UpdateSchedulerTable();
+            UpdateCalendar();
             _dailyReminderTask = new Task(DailyReminder);
             _dailyReminderTask.Start();
 
@@ -51,10 +53,17 @@ namespace Scheduler{
                 }
 
                 if (upcomingEventDetected){
-                    NotifyIcon.Icon = new Icon("redwarn.ico");
+                    if (_warningIconDisplayed){
+                        NotifyIcon.Icon = new Icon("Content/redwarn.ico");
+                        _warningIconDisplayed = false;
+                    }
+                    else{
+                        NotifyIcon.Icon = new Icon("Content/unhappyface.ico");
+                        _warningIconDisplayed = true;
+                    }
                 }
                 else{
-                    NotifyIcon.Icon = new Icon("happyface.ico");
+                    NotifyIcon.Icon = new Icon("Content/happyface.ico");
                 }
             }
         }
@@ -64,6 +73,7 @@ namespace Scheduler{
             _scheduler.CancelEvent(eventToCancel);
             ResetEventCancelFields();
             UpdateSchedulerTable();
+            UpdateCalendar();
         }
 
         void AddEventButton_Click(object sender, EventArgs e){
@@ -76,6 +86,7 @@ namespace Scheduler{
 
             ResetEventAdditionFields();
             UpdateSchedulerTable();
+            UpdateCalendar();
         }
 
         void ResetEventCancelFields(){
@@ -123,8 +134,16 @@ namespace Scheduler{
             }
         }
 
-        void UpdateSchedulerTable(){
+        void UpdateCalendar(){
             monthCalendar1.RemoveAllBoldedDates();
+            var events = _scheduler.GetActiveEvents();
+            foreach (DisplayEvent t in events){
+                monthCalendar1.AddBoldedDate(t.EventDateTime);
+            }
+            monthCalendar1.UpdateBoldedDates();
+        }
+
+        void UpdateSchedulerTable(){
             var events = _scheduler.GetActiveEvents();
             var sorted = events.OrderBy(e => e.Date).ToArray();
             EventTable.RowCount = sorted.Length;
@@ -154,7 +173,6 @@ namespace Scheduler{
                 EventTable[1, i].Value = sorted[i].Date;
                 EventTable[2, i].Value = sorted[i].Time;
                 EventTable[3, i].Value = sorted[i].TimeUntil;
-                monthCalendar1.AddBoldedDate(sorted[i].EventDateTime);
             }
         }
 
