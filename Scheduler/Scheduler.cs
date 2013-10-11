@@ -51,6 +51,7 @@ namespace Scheduler{
                 var timeUntil = @event.EventDate - DateTime.Now;
                 var timeUntilStr = timeUntil.Days + "d " + timeUntil.Hours + "h " + timeUntil.Minutes + "m " + timeUntil.Seconds + "s";
                 displayEvent.TimeUntil = timeUntilStr;
+                displayEvent.EventDateTime = @event.EventDate;
 
                 displayEvents.Add(displayEvent);
             }

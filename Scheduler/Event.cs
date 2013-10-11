@@ -13,6 +13,7 @@ namespace Scheduler{
     }
 
     internal class DisplayEvent{
+        public DateTime EventDateTime;
         public string Description;
         public string Date;
         public string Time;

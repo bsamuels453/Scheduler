@@ -12,8 +12,11 @@ using System.Windows.Forms;
 namespace Scheduler{
     public partial class SchedulerWindow : Form{
         readonly Task _dailyReminderTask;
+        readonly DataGridViewCellStyle _defaultStyle;
         readonly Scheduler _scheduler;
 
+        readonly DataGridViewCellStyle _urgentStyle;
+        readonly DataGridViewCellStyle _warningStyle;
         Task _fieldUpdateTask;
         bool _killFieldUpdateTask;
 
@@ -23,6 +26,16 @@ namespace Scheduler{
             UpdateSchedulerTable();
             _dailyReminderTask = new Task(DailyReminder);
             _dailyReminderTask.Start();
+
+            _urgentStyle = new DataGridViewCellStyle();
+            _urgentStyle.BackColor = Color.LightPink;
+            _urgentStyle.SelectionBackColor = Color.LightPink;
+            _warningStyle = new DataGridViewCellStyle();
+            _warningStyle.BackColor = Color.LightYellow;
+            _warningStyle.SelectionBackColor = Color.LightYellow;
+            _defaultStyle = new DataGridViewCellStyle();
+            _defaultStyle.BackColor = Color.LightGreen;
+            _defaultStyle.SelectionBackColor = Color.LightGreen;
         }
 
         void DailyReminder(){
@@ -111,14 +124,37 @@ namespace Scheduler{
         }
 
         void UpdateSchedulerTable(){
+            monthCalendar1.RemoveAllBoldedDates();
             var events = _scheduler.GetActiveEvents();
             var sorted = events.OrderBy(e => e.Date).ToArray();
             EventTable.RowCount = sorted.Length;
             for (int i = 0; i < sorted.Length; i++){
+                var daysRemaining = (sorted[i].EventDateTime - DateTime.Now).Days;
+
+                if (daysRemaining >= 7){
+                    EventTable[0, i].Style = _defaultStyle;
+                    EventTable[1, i].Style = _defaultStyle;
+                    EventTable[2, i].Style = _defaultStyle;
+                    EventTable[3, i].Style = _defaultStyle;
+                }
+                if (daysRemaining < 7 && daysRemaining >= 1){
+                    EventTable[0, i].Style = _warningStyle;
+                    EventTable[1, i].Style = _warningStyle;
+                    EventTable[2, i].Style = _warningStyle;
+                    EventTable[3, i].Style = _warningStyle;
+                }
+                if (daysRemaining < 1){
+                    EventTable[0, i].Style = _urgentStyle;
+                    EventTable[1, i].Style = _urgentStyle;
+                    EventTable[2, i].Style = _urgentStyle;
+                    EventTable[3, i].Style = _urgentStyle;
+                }
+
                 EventTable[0, i].Value = sorted[i].Description;
                 EventTable[1, i].Value = sorted[i].Date;
                 EventTable[2, i].Value = sorted[i].Time;
                 EventTable[3, i].Value = sorted[i].TimeUntil;
+                monthCalendar1.AddBoldedDate(sorted[i].EventDateTime);
             }
         }
 
@@ -173,7 +209,7 @@ namespace Scheduler{
             }
         }
 
-        private void NotifyIcon_MouseClick(object sender, MouseEventArgs e) {
+        void NotifyIcon_MouseClick(object sender, MouseEventArgs e){
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
