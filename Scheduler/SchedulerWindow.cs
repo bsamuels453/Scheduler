@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -21,6 +22,7 @@ namespace Scheduler{
         bool _killFieldUpdateTask;
         bool _warningIconDisplayed;
 
+
         public SchedulerWindow(){
             InitializeComponent();
             _scheduler = new Scheduler();
@@ -28,6 +30,8 @@ namespace Scheduler{
             UpdateCalendar();
             _dailyReminderTask = new Task(DailyReminder);
             _dailyReminderTask.Start();
+            _warningsToDeploy = new List<DisplayEvent>();
+            _deployedWarnings = new List<DisplayEvent>();
 
             _urgentStyle = new DataGridViewCellStyle();
             _urgentStyle.BackColor = Color.LightPink;
@@ -40,33 +44,6 @@ namespace Scheduler{
             _defaultStyle.SelectionBackColor = Color.LightGreen;
         }
 
-        void DailyReminder(){
-            while (true){
-                Thread.Sleep(1000);
-                var events = _scheduler.GetRawActiveEvents();
-                bool upcomingEventDetected = false;
-                foreach (var @event in events){
-                    if (@event.EventDate - DateTime.Now < new TimeSpan(1, 0, 0, 0)){
-                        upcomingEventDetected = true;
-                        break;
-                    }
-                }
-
-                if (upcomingEventDetected){
-                    if (_warningIconDisplayed){
-                        NotifyIcon.Icon = new Icon("Content/redwarn.ico");
-                        _warningIconDisplayed = false;
-                    }
-                    else{
-                        NotifyIcon.Icon = new Icon("Content/unhappyface.ico");
-                        _warningIconDisplayed = true;
-                    }
-                }
-                else{
-                    NotifyIcon.Icon = new Icon("Content/happyface.ico");
-                }
-            }
-        }
 
         void CancelButton_Click(object sender, EventArgs e){
             var eventToCancel = CancellationComboBox.Text;
