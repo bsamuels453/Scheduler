@@ -61,7 +61,10 @@ namespace Scheduler{
             var time = NewEventTimePicker.Value;
 
             var eventDatetime = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
-
+            if (eventDatetime < DateTime.Now){
+                MessageBox.Show("You need to select a date and time that is in the future");
+                return;
+            }
             _scheduler.AddEvent(DescriptionTextBox.Text, eventDatetime);
 
             ResetEventAdditionFields();
@@ -155,6 +158,7 @@ namespace Scheduler{
                 EventTable[3, i].Value = sorted[i].TimeUntil;
             }
         }
+
 
         void UpdateFieldsLoop(){
             while (true){
