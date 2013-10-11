@@ -20,11 +20,12 @@ namespace Scheduler{
         readonly DataGridViewCellStyle _warningStyle;
         Task _fieldUpdateTask;
         bool _killFieldUpdateTask;
-        bool _warningIconDisplayed;
 
 
         public SchedulerWindow(){
             InitializeComponent();
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             _scheduler = new Scheduler();
             UpdateSchedulerTable();
             UpdateCalendar();
