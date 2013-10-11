@@ -201,6 +201,7 @@ namespace Scheduler{
         void SchedulerWindow_FormClosing(object sender, FormClosingEventArgs e){
             _killFieldUpdateTask = true;
             _fieldUpdateTask.Wait();
+            NotifyIcon.Icon = null;
         }
 
         void notifyIcon1_DoubleClick(object sender, EventArgs e){
