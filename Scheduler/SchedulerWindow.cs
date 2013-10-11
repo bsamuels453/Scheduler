@@ -72,7 +72,7 @@ namespace Scheduler{
         }
 
         void ResetEventAdditionFields(){
-            DescriptionTextBox.Text = "Description goes here";
+            DescriptionTextBox.Text = "Description...";
             NewEventDatePicker.Value = DateTime.Now;
             NewEventTimePicker.Value = DateTime.Now;
             AddEventButton.Enabled = false;
