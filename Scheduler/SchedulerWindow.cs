@@ -125,7 +125,7 @@ namespace Scheduler{
 
         void UpdateSchedulerTable(){
             var events = _scheduler.GetActiveEvents();
-            var sorted = events.OrderBy(e => e.Date).ToArray();
+            var sorted = events.OrderBy(e => e.EventDateTime).ToArray();
             EventTable.RowCount = sorted.Length;
             for (int i = 0; i < sorted.Length; i++){
                 var daysRemaining = (sorted[i].EventDateTime - DateTime.Now).Days;
