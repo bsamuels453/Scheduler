@@ -30,6 +30,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SchedulerWindow));
             this.EventTable = new System.Windows.Forms.DataGridView();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,10 +47,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.CancellationComboBox = new System.Windows.Forms.ComboBox();
             this.CancButton = new System.Windows.Forms.Button();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
             this.SuspendLayout();
@@ -98,6 +98,42 @@
             this.EventTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.EventTable.Size = new System.Drawing.Size(471, 186);
             this.EventTable.TabIndex = 3;
+            // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.HeaderText = "Column1";
+            this.Description.MinimumWidth = 230;
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
+            this.Description.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // DateAt
+            // 
+            this.DateAt.HeaderText = "Column1";
+            this.DateAt.MinimumWidth = 70;
+            this.DateAt.Name = "DateAt";
+            this.DateAt.ReadOnly = true;
+            this.DateAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DateAt.Width = 70;
+            // 
+            // TimeAt
+            // 
+            this.TimeAt.HeaderText = "Column1";
+            this.TimeAt.MinimumWidth = 60;
+            this.TimeAt.Name = "TimeAt";
+            this.TimeAt.ReadOnly = true;
+            this.TimeAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TimeAt.Width = 60;
+            // 
+            // TimeUntil
+            // 
+            this.TimeUntil.HeaderText = "Column1";
+            this.TimeUntil.MinimumWidth = 90;
+            this.TimeUntil.Name = "TimeUntil";
+            this.TimeUntil.ReadOnly = true;
+            this.TimeUntil.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TimeUntil.Width = 90;
             // 
             // monthCalendar1
             // 
@@ -218,46 +254,8 @@
             this.CancButton.UseVisualStyleBackColor = true;
             this.CancButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.HeaderText = "Column1";
-            this.Description.MinimumWidth = 230;
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
-            this.Description.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // DateAt
-            // 
-            this.DateAt.HeaderText = "Column1";
-            this.DateAt.MinimumWidth = 70;
-            this.DateAt.Name = "DateAt";
-            this.DateAt.ReadOnly = true;
-            this.DateAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DateAt.Width = 70;
-            // 
-            // TimeAt
-            // 
-            this.TimeAt.HeaderText = "Column1";
-            this.TimeAt.MinimumWidth = 60;
-            this.TimeAt.Name = "TimeAt";
-            this.TimeAt.ReadOnly = true;
-            this.TimeAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TimeAt.Width = 60;
-            // 
-            // TimeUntil
-            // 
-            this.TimeUntil.HeaderText = "Column1";
-            this.TimeUntil.MinimumWidth = 90;
-            this.TimeUntil.Name = "TimeUntil";
-            this.TimeUntil.ReadOnly = true;
-            this.TimeUntil.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TimeUntil.Width = 90;
-            // 
             // NotifyIcon
             // 
-            this.NotifyIcon.BalloonTipText = "Sent to Tray";
-            this.NotifyIcon.BalloonTipTitle = "Scheduler";
             this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
             this.NotifyIcon.Text = "Scheduler";
             this.NotifyIcon.Visible = true;

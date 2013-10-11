@@ -29,6 +29,8 @@ namespace Scheduler{
             _scheduler = new Scheduler();
             UpdateSchedulerTable();
             UpdateCalendar();
+            ResetEventAdditionFields();
+            ResetEventCancelFields();
             _dailyReminderTask = new Task(DailyReminder);
             _dailyReminderTask.Start();
             _warningsToDeploy = new List<DisplayEvent>();
@@ -76,7 +78,7 @@ namespace Scheduler{
         void ResetEventAdditionFields(){
             DescriptionTextBox.Text = "Description...";
             NewEventDatePicker.Value = DateTime.Now;
-            NewEventTimePicker.Value = DateTime.Now;
+            NewEventTimePicker.Value = new DateTime(2013,1,1,8,0,0,0);
             AddEventButton.Enabled = false;
         }
 
@@ -197,7 +199,6 @@ namespace Scheduler{
         void SchedulerWindow_Resize(object sender, EventArgs e){
             if (FormWindowState.Minimized == this.WindowState){
                 NotifyIcon.Visible = true;
-                NotifyIcon.ShowBalloonTip(2);
                 this.Hide();
             }
             else if (FormWindowState.Normal == this.WindowState){
