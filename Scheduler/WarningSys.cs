@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -35,8 +36,28 @@ namespace Scheduler{
                 else{
                     NotifyIcon.Icon = new Icon("Content/happyface.ico");
                 }
+                UpdateNotifyIconTooltip(events);
                 CullDeployedWarnings();
+                _scheduler.RefreshActiveEvents();
             }
+        }
+
+        void UpdateNotifyIconTooltip(List<DisplayEvent> events){
+            var sorted = events.OrderBy(e => e.EventDateTime).ToArray();
+            if (sorted.Length > 0) {
+                var iconText = "";
+                iconText += "Next event: ";
+                iconText += sorted[0].Description + Environment.NewLine;
+                iconText += "ETA: ";
+                iconText += sorted[0].TimeUntil;
+
+                NotifyIcon.Text = iconText;
+            }
+            else{
+                NotifyIcon.Text = "No events scheduled";
+            }
+            
+            int g = 5;
         }
 
         void CullDeployedWarnings(){
