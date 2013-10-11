@@ -243,6 +243,7 @@
             this.NotifyIcon.Text = "Scheduler";
             this.NotifyIcon.Visible = true;
             this.NotifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            this.NotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseClick);
             this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // SchedulerWindow

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Windows.Forms;
 
 namespace Scheduler{
     public partial class SchedulerWindow : Form{
+        readonly Task _dailyReminderTask;
         readonly Scheduler _scheduler;
 
         Task _fieldUpdateTask;
@@ -19,6 +21,29 @@ namespace Scheduler{
             InitializeComponent();
             _scheduler = new Scheduler();
             UpdateSchedulerTable();
+            _dailyReminderTask = new Task(DailyReminder);
+            _dailyReminderTask.Start();
+        }
+
+        void DailyReminder(){
+            while (true){
+                Thread.Sleep(1000);
+                var events = _scheduler.GetRawActiveEvents();
+                bool upcomingEventDetected = false;
+                foreach (var @event in events){
+                    if (@event.EventDate - DateTime.Now < new TimeSpan(1, 0, 0, 0)){
+                        upcomingEventDetected = true;
+                        break;
+                    }
+                }
+
+                if (upcomingEventDetected){
+                    NotifyIcon.Icon = new Icon("redwarn.ico");
+                }
+                else{
+                    NotifyIcon.Icon = new Icon("happyface.ico");
+                }
+            }
         }
 
         void CancelButton_Click(object sender, EventArgs e){
@@ -117,7 +142,6 @@ namespace Scheduler{
         void SchedulerWindow_Deactivate(object sender, EventArgs e){
             _killFieldUpdateTask = true;
             _fieldUpdateTask.Wait();
-
         }
 
         void SchedulerWindow_FormClosing(object sender, FormClosingEventArgs e){
@@ -125,28 +149,34 @@ namespace Scheduler{
             _fieldUpdateTask.Wait();
         }
 
-        private void notifyIcon1_DoubleClick(object sender, EventArgs e) {
+        void notifyIcon1_DoubleClick(object sender, EventArgs e){
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
+        void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e){
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
         }
 
-        private void SchedulerWindow_Resize(object sender, EventArgs e) {
-            if (FormWindowState.Minimized == this.WindowState) {
+        void SchedulerWindow_Resize(object sender, EventArgs e){
+            if (FormWindowState.Minimized == this.WindowState){
                 NotifyIcon.Visible = true;
-                NotifyIcon.ShowBalloonTip(5);
+                NotifyIcon.ShowBalloonTip(2);
                 this.Hide();
             }
-            else if (FormWindowState.Normal == this.WindowState) {
+            else if (FormWindowState.Normal == this.WindowState){
                 NotifyIcon.Visible = false;
                 //Application.OpenForms["PikaForm"].BringToFront();
             }
+        }
+
+        private void NotifyIcon_MouseClick(object sender, MouseEventArgs e) {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            NotifyIcon.Visible = false;
         }
     }
 }

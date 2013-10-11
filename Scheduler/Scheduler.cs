@@ -33,6 +33,10 @@ namespace Scheduler{
             }
         }
 
+        public List<Event> GetRawActiveEvents(){
+            return _events.Where(e => !e.HasPassed && !e.IsCancelled).ToList();
+        }
+
         public List<DisplayEvent> GetActiveEvents(){
             var activeEvents = _events.Where(e => !e.HasPassed && !e.IsCancelled).ToArray();
             var displayEvents = new List<DisplayEvent>(activeEvents.Length);
