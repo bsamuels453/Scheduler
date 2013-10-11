@@ -117,11 +117,36 @@ namespace Scheduler{
         void SchedulerWindow_Deactivate(object sender, EventArgs e){
             _killFieldUpdateTask = true;
             _fieldUpdateTask.Wait();
+
         }
 
         void SchedulerWindow_FormClosing(object sender, FormClosingEventArgs e){
             _killFieldUpdateTask = true;
             _fieldUpdateTask.Wait();
+        }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e) {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            NotifyIcon.Visible = false;
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            NotifyIcon.Visible = false;
+        }
+
+        private void SchedulerWindow_Resize(object sender, EventArgs e) {
+            if (FormWindowState.Minimized == this.WindowState) {
+                NotifyIcon.Visible = true;
+                NotifyIcon.ShowBalloonTip(5);
+                this.Hide();
+            }
+            else if (FormWindowState.Normal == this.WindowState) {
+                NotifyIcon.Visible = false;
+                //Application.OpenForms["PikaForm"].BringToFront();
+            }
         }
     }
 }

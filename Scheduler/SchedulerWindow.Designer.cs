@@ -23,7 +23,9 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SchedulerWindow));
             this.EventTable = new System.Windows.Forms.DataGridView();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,6 +44,7 @@
             this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -232,11 +235,21 @@
             this.TimeUntil.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.TimeUntil.Width = 90;
             // 
+            // NotifyIcon
+            // 
+            this.NotifyIcon.BalloonTipText = "Sent to Tray";
+            this.NotifyIcon.BalloonTipTitle = "Scheduler";
+            this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
+            this.NotifyIcon.Text = "Scheduler";
+            this.NotifyIcon.Visible = true;
+            this.NotifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
             // SchedulerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 700);
+            this.ClientSize = new System.Drawing.Size(500, 563);
             this.Controls.Add(this.CancButton);
             this.Controls.Add(this.CancellationComboBox);
             this.Controls.Add(this.label6);
@@ -256,6 +269,7 @@
             this.Activated += new System.EventHandler(this.SchedulerWindow_Activated);
             this.Deactivate += new System.EventHandler(this.SchedulerWindow_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SchedulerWindow_FormClosing);
+            this.Resize += new System.EventHandler(this.SchedulerWindow_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -282,6 +296,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DateAt;
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeAt;
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeUntil;
+        private System.Windows.Forms.NotifyIcon NotifyIcon;
     }
 }
 
