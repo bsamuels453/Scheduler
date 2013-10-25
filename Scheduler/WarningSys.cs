@@ -36,8 +36,8 @@ namespace Scheduler{
                 else{
                     NotifyIcon.Icon = new Icon("Content/happyface.ico");
                 }
-                UpdateNotifyIconTooltip(events);
-                CullDeployedWarnings();
+                //UpdateNotifyIconTooltip(events);
+                //CullDeployedWarnings();
                 _scheduler.RefreshActiveEvents();
             }
         }
@@ -50,7 +50,9 @@ namespace Scheduler{
                 iconText += sorted[0].Description + Environment.NewLine;
                 iconText += "ETA: ";
                 iconText += sorted[0].TimeUntil;
-
+                if (iconText.Length > 64){
+                    iconText = iconText.Substring(0, 63);
+                }
                 NotifyIcon.Text = iconText;
             }
             else{
