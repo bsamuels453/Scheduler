@@ -12,8 +12,18 @@ using System.Windows.Forms;
 
 namespace Scheduler{
     public partial class SchedulerWindow : Form{
+        const string _editButtonText = "Edit";
+        const string _removeButtonText = "Remove";
+        const int _eventTableRowHeight = 22;
+        readonly Dictionary<int, Tuple<string, DateTime>> _buttonToEventLookup;
         readonly Task _dailyReminderTask;
         readonly DataGridViewCellStyle _defaultStyle;
+        readonly Point _editButtonBase = new Point(457, 19);
+        readonly List<Button> _editButtons;
+        readonly Size _editButtonsize = new Size(35, 19);
+        readonly Point _removeButtonBase = new Point(491, 19);
+        readonly List<Button> _removeButtons;
+        readonly Size _removeButtonsize = new Size(55, 19);
         readonly Scheduler _scheduler;
 
         readonly DataGridViewCellStyle _urgentStyle;
@@ -26,14 +36,17 @@ namespace Scheduler{
             InitializeComponent();
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            _warningsToDeploy = new List<DisplayEvent>();
+            _deployedWarnings = new List<DisplayEvent>();
+            _editButtons = new List<Button>();
+            _removeButtons = new List<Button>();
+            _buttonToEventLookup = new Dictionary<int, Tuple<string, DateTime>>();
             _scheduler = new Scheduler();
             UpdateSchedulerTable();
             UpdateCalendar();
-            ResetEventCancelFields();
             _dailyReminderTask = new Task(DailyReminder);
             _dailyReminderTask.Start();
-            _warningsToDeploy = new List<DisplayEvent>();
-            _deployedWarnings = new List<DisplayEvent>();
+
 
             _urgentStyle = new DataGridViewCellStyle();
             _urgentStyle.BackColor = Color.LightPink;
@@ -46,12 +59,6 @@ namespace Scheduler{
             _defaultStyle.SelectionBackColor = Color.LightGreen;
         }
 
-        void ResetEventCancelFields(){
-            CancellationComboBox.DataSource = null;
-            CancellationComboBox.SelectedIndex = -1;
-            CancButton.Enabled = false;
-        }
-
         public void UpdateCalendar(){
             monthCalendar1.RemoveAllBoldedDates();
             var events = _scheduler.GetActiveEvents();
@@ -62,6 +69,7 @@ namespace Scheduler{
         }
 
         public void UpdateSchedulerTable(){
+            int numPrevEvents = EventTable.RowCount;
             var events = _scheduler.GetActiveEvents();
             var sorted = events.OrderBy(e => e.EventDateTime).ToArray();
             EventTable.RowCount = sorted.Length;
@@ -92,6 +100,49 @@ namespace Scheduler{
                 EventTable[2, i].Value = sorted[i].Time;
                 EventTable[3, i].Value = sorted[i].TimeUntil;
             }
+            if (numPrevEvents != EventTable.RowCount){
+                EventTable.Height = 30 + EventTable.RowCount*_eventTableRowHeight;
+                UpdateSchedulerTableButtons(sorted);
+            }
+        }
+
+        void UpdateSchedulerTableButtons(DisplayEvent[] displayedEvents){
+            foreach (var button in _editButtons){
+                button.Dispose();
+            }
+            foreach (var button in _removeButtons){
+                button.Dispose();
+            }
+            _editButtons.Clear();
+            _removeButtons.Clear();
+            _buttonToEventLookup.Clear();
+
+            for (int i = 0; i < EventTable.RowCount; i++){
+                var editButton = new Button();
+                editButton.Parent = EventPanel;
+                editButton.Location = new Point(_editButtonBase.X, _editButtonBase.Y + _eventTableRowHeight*i);
+                editButton.Size = _editButtonsize;
+                editButton.Text = _editButtonText;
+                editButton.Name = i.ToString();
+                _editButtons.Add(editButton);
+
+                var removeButton = new Button();
+                removeButton.Parent = EventPanel;
+                removeButton.Location = new Point(_removeButtonBase.X, _removeButtonBase.Y + _eventTableRowHeight*i);
+                removeButton.Size = _removeButtonsize;
+                removeButton.Text = _removeButtonText;
+                removeButton.Name = i.ToString();
+                _removeButtons.Add(removeButton);
+
+                _buttonToEventLookup.Add
+                    (
+                        i,
+                        new Tuple<string, DateTime>
+                            (
+                            displayedEvents[i].Description,
+                            displayedEvents[i].EventDateTime
+                            ));
+            }
         }
 
         void UpdateFieldsLoop(){
@@ -104,12 +155,13 @@ namespace Scheduler{
             }
         }
 
+        #region main ui delegs
+
         void AddEventToolStripMenuItemClick(object sender, EventArgs e){
             _addEventForm = new AddEvent(_scheduler, this);
         }
 
-        #region main ui delegs
-
+        /*
         void CancelButtonClick(object sender, EventArgs e){
             var eventToCancel = CancellationComboBox.Text;
             _scheduler.CancelEvent(eventToCancel);
@@ -134,6 +186,7 @@ namespace Scheduler{
                 CancButton.Enabled = true;
             }
         }
+         */
 
         #endregion
 

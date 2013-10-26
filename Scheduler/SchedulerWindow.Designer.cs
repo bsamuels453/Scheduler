@@ -24,32 +24,95 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SchedulerWindow));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SchedulerWindow));
-            this.EventTable = new System.Windows.Forms.DataGridView();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.label6 = new System.Windows.Forms.Label();
-            this.CancellationComboBox = new System.Windows.Forms.ComboBox();
-            this.CancButton = new System.Windows.Forms.Button();
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.eventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportEventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EventPanel = new System.Windows.Forms.Panel();
+            this.EventTable = new System.Windows.Forms.DataGridView();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.EventPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
             this.SuspendLayout();
+            // 
+            // monthCalendar1
+            // 
+            this.monthCalendar1.CalendarDimensions = new System.Drawing.Size(2, 1);
+            this.monthCalendar1.Location = new System.Drawing.Point(61, 25);
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 5;
+            // 
+            // NotifyIcon
+            // 
+            this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
+            this.NotifyIcon.Text = "Scheduler";
+            this.NotifyIcon.Visible = true;
+            this.NotifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon1DoubleClick);
+            this.NotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIconMouseClick);
+            this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon1MouseDoubleClick);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eventsToolStripMenuItem,
+            this.optionsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(596, 24);
+            this.menuStrip1.TabIndex = 19;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // eventsToolStripMenuItem
+            // 
+            this.eventsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addEventToolStripMenuItem,
+            this.exportEventsToolStripMenuItem});
+            this.eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
+            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.eventsToolStripMenuItem.Text = "Events";
+            // 
+            // addEventToolStripMenuItem
+            // 
+            this.addEventToolStripMenuItem.Name = "addEventToolStripMenuItem";
+            this.addEventToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addEventToolStripMenuItem.Text = "Add Event";
+            this.addEventToolStripMenuItem.Click += new System.EventHandler(this.AddEventToolStripMenuItemClick);
+            // 
+            // exportEventsToolStripMenuItem
+            // 
+            this.exportEventsToolStripMenuItem.Enabled = false;
+            this.exportEventsToolStripMenuItem.Name = "exportEventsToolStripMenuItem";
+            this.exportEventsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportEventsToolStripMenuItem.Text = "Export Events";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Enabled = false;
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // EventPanel
+            // 
+            this.EventPanel.AutoScroll = true;
+            this.EventPanel.Controls.Add(this.EventTable);
+            this.EventPanel.Location = new System.Drawing.Point(17, 199);
+            this.EventPanel.Name = "EventPanel";
+            this.EventPanel.Size = new System.Drawing.Size(566, 362);
+            this.EventPanel.TabIndex = 20;
             // 
             // EventTable
             // 
@@ -60,6 +123,7 @@
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.EventTable.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.EventTable.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.EventTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.EventTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -85,7 +149,7 @@
             this.EventTable.DefaultCellStyle = dataGridViewCellStyle3;
             this.EventTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.EventTable.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.EventTable.Location = new System.Drawing.Point(12, 199);
+            this.EventTable.Location = new System.Drawing.Point(2, 0);
             this.EventTable.MultiSelect = false;
             this.EventTable.Name = "EventTable";
             this.EventTable.ReadOnly = true;
@@ -93,110 +157,10 @@
             this.EventTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
             this.EventTable.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.EventTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.EventTable.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.EventTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.EventTable.Size = new System.Drawing.Size(457, 280);
-            this.EventTable.TabIndex = 3;
-            // 
-            // monthCalendar1
-            // 
-            this.monthCalendar1.CalendarDimensions = new System.Drawing.Size(2, 1);
-            this.monthCalendar1.Location = new System.Drawing.Point(11, 25);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 5;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 482);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 13);
-            this.label6.TabIndex = 15;
-            this.label6.Text = "Cancel Event";
-            // 
-            // CancellationComboBox
-            // 
-            this.CancellationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CancellationComboBox.FormattingEnabled = true;
-            this.CancellationComboBox.Location = new System.Drawing.Point(18, 498);
-            this.CancellationComboBox.Name = "CancellationComboBox";
-            this.CancellationComboBox.Size = new System.Drawing.Size(200, 21);
-            this.CancellationComboBox.TabIndex = 16;
-            this.CancellationComboBox.SelectionChangeCommitted += new System.EventHandler(this.CancellationComboBoxSelectionChangeCommitted);
-            this.CancellationComboBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CancellationComboBoxMouseDown);
-            // 
-            // CancButton
-            // 
-            this.CancButton.Enabled = false;
-            this.CancButton.Location = new System.Drawing.Point(18, 525);
-            this.CancButton.Name = "CancButton";
-            this.CancButton.Size = new System.Drawing.Size(89, 23);
-            this.CancButton.TabIndex = 17;
-            this.CancButton.Text = "Cancel  Event";
-            this.CancButton.UseVisualStyleBackColor = true;
-            this.CancButton.Click += new System.EventHandler(this.CancelButtonClick);
-            // 
-            // NotifyIcon
-            // 
-            this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
-            this.NotifyIcon.Text = "Scheduler";
-            this.NotifyIcon.Visible = true;
-            this.NotifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon1DoubleClick);
-            this.NotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIconMouseClick);
-            this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon1MouseDoubleClick);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.eventsToolStripMenuItem,
-            this.optionsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(480, 24);
-            this.menuStrip1.TabIndex = 19;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // eventsToolStripMenuItem
-            // 
-            this.eventsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addEventToolStripMenuItem,
-            this.editEventToolStripMenuItem,
-            this.removeEventToolStripMenuItem,
-            this.exportEventsToolStripMenuItem});
-            this.eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
-            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
-            this.eventsToolStripMenuItem.Text = "Events";
-            // 
-            // addEventToolStripMenuItem
-            // 
-            this.addEventToolStripMenuItem.Name = "addEventToolStripMenuItem";
-            this.addEventToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.addEventToolStripMenuItem.Text = "Add Event";
-            this.addEventToolStripMenuItem.Click += new System.EventHandler(this.AddEventToolStripMenuItemClick);
-            // 
-            // editEventToolStripMenuItem
-            // 
-            this.editEventToolStripMenuItem.Name = "editEventToolStripMenuItem";
-            this.editEventToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.editEventToolStripMenuItem.Text = "Edit Event";
-            // 
-            // removeEventToolStripMenuItem
-            // 
-            this.removeEventToolStripMenuItem.Name = "removeEventToolStripMenuItem";
-            this.removeEventToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.removeEventToolStripMenuItem.Text = "Remove Event";
-            // 
-            // exportEventsToolStripMenuItem
-            // 
-            this.exportEventsToolStripMenuItem.Name = "exportEventsToolStripMenuItem";
-            this.exportEventsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.exportEventsToolStripMenuItem.Text = "Export Events";
-            // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
+            this.EventTable.Size = new System.Drawing.Size(453, 359);
+            this.EventTable.TabIndex = 4;
             // 
             // Description
             // 
@@ -242,13 +206,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 565);
+            this.ClientSize = new System.Drawing.Size(596, 573);
+            this.Controls.Add(this.EventPanel);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.CancButton);
-            this.Controls.Add(this.CancellationComboBox);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.monthCalendar1);
-            this.Controls.Add(this.EventTable);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "SchedulerWindow";
             this.Text = "Scheduler";
@@ -256,9 +217,10 @@
             this.Deactivate += new System.EventHandler(this.SchedulerWindowDeactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SchedulerWindowFormClosing);
             this.Resize += new System.EventHandler(this.SchedulerWindowResize);
-            ((System.ComponentModel.ISupportInitialize)(this.EventTable)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.EventPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.EventTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,20 +228,16 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView EventTable;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox CancellationComboBox;
-        private System.Windows.Forms.Button CancButton;
         private System.Windows.Forms.NotifyIcon NotifyIcon;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem eventsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addEventToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editEventToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeEventToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportEventsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.Panel EventPanel;
+        private System.Windows.Forms.DataGridView EventTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateAt;
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeAt;
