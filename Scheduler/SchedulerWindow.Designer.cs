@@ -30,15 +30,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SchedulerWindow));
             this.EventTable = new System.Windows.Forms.DataGridView();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.CancellationComboBox = new System.Windows.Forms.ComboBox();
             this.CancButton = new System.Windows.Forms.Button();
@@ -51,6 +43,10 @@
             this.removeEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportEventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -74,7 +70,6 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.EventTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.EventTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.EventTable.ColumnHeadersVisible = false;
             this.EventTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Description,
             this.DateAt,
@@ -90,7 +85,7 @@
             this.EventTable.DefaultCellStyle = dataGridViewCellStyle3;
             this.EventTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.EventTable.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.EventTable.Location = new System.Drawing.Point(18, 206);
+            this.EventTable.Location = new System.Drawing.Point(12, 199);
             this.EventTable.MultiSelect = false;
             this.EventTable.Name = "EventTable";
             this.EventTable.ReadOnly = true;
@@ -100,86 +95,15 @@
             this.EventTable.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.EventTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.EventTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.EventTable.Size = new System.Drawing.Size(471, 186);
+            this.EventTable.Size = new System.Drawing.Size(457, 280);
             this.EventTable.TabIndex = 3;
-            // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.HeaderText = "Column1";
-            this.Description.MinimumWidth = 230;
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
-            this.Description.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // DateAt
-            // 
-            this.DateAt.HeaderText = "Column1";
-            this.DateAt.MinimumWidth = 70;
-            this.DateAt.Name = "DateAt";
-            this.DateAt.ReadOnly = true;
-            this.DateAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DateAt.Width = 70;
-            // 
-            // TimeAt
-            // 
-            this.TimeAt.HeaderText = "Column1";
-            this.TimeAt.MinimumWidth = 60;
-            this.TimeAt.Name = "TimeAt";
-            this.TimeAt.ReadOnly = true;
-            this.TimeAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TimeAt.Width = 60;
-            // 
-            // TimeUntil
-            // 
-            this.TimeUntil.HeaderText = "Column1";
-            this.TimeUntil.MinimumWidth = 90;
-            this.TimeUntil.Name = "TimeUntil";
-            this.TimeUntil.ReadOnly = true;
-            this.TimeUntil.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TimeUntil.Width = 90;
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(18, 25);
+            this.monthCalendar1.CalendarDimensions = new System.Drawing.Size(2, 1);
+            this.monthCalendar1.Location = new System.Drawing.Point(11, 25);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(278, 189);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Date";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(344, 189);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(30, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Time";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 189);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Description";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(418, 189);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(51, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "TimeUntil";
             // 
             // label6
             // 
@@ -228,7 +152,7 @@
             this.optionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(500, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(480, 24);
             this.menuStrip1.TabIndex = 19;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -274,19 +198,55 @@
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.HeaderText = "Description";
+            this.Description.MinimumWidth = 220;
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
+            this.Description.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Description.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // DateAt
+            // 
+            this.DateAt.HeaderText = "Date";
+            this.DateAt.MinimumWidth = 70;
+            this.DateAt.Name = "DateAt";
+            this.DateAt.ReadOnly = true;
+            this.DateAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DateAt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.DateAt.Width = 70;
+            // 
+            // TimeAt
+            // 
+            this.TimeAt.HeaderText = "Time";
+            this.TimeAt.MinimumWidth = 60;
+            this.TimeAt.Name = "TimeAt";
+            this.TimeAt.ReadOnly = true;
+            this.TimeAt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TimeAt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.TimeAt.Width = 60;
+            // 
+            // TimeUntil
+            // 
+            this.TimeUntil.HeaderText = "TimeUntil";
+            this.TimeUntil.MinimumWidth = 90;
+            this.TimeUntil.Name = "TimeUntil";
+            this.TimeUntil.ReadOnly = true;
+            this.TimeUntil.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TimeUntil.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.TimeUntil.Width = 95;
+            // 
             // SchedulerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 563);
+            this.ClientSize = new System.Drawing.Size(480, 565);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.CancButton);
             this.Controls.Add(this.CancellationComboBox);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.monthCalendar1);
             this.Controls.Add(this.EventTable);
             this.MainMenuStrip = this.menuStrip1;
@@ -308,17 +268,9 @@
 
         private System.Windows.Forms.DataGridView EventTable;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox CancellationComboBox;
         private System.Windows.Forms.Button CancButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Description;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateAt;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TimeAt;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TimeUntil;
         private System.Windows.Forms.NotifyIcon NotifyIcon;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -328,6 +280,10 @@
         private System.Windows.Forms.ToolStripMenuItem removeEventToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportEventsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Description;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateAt;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TimeAt;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TimeUntil;
     }
 }
 
