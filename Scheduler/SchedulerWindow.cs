@@ -18,6 +18,7 @@ namespace Scheduler{
 
         readonly DataGridViewCellStyle _urgentStyle;
         readonly DataGridViewCellStyle _warningStyle;
+        AddEvent _addEventForm;
         Task _fieldUpdateTask;
         bool _killFieldUpdateTask;
 
@@ -28,7 +29,6 @@ namespace Scheduler{
             _scheduler = new Scheduler();
             UpdateSchedulerTable();
             UpdateCalendar();
-            ResetEventAdditionFields();
             ResetEventCancelFields();
             _dailyReminderTask = new Task(DailyReminder);
             _dailyReminderTask.Start();
@@ -52,14 +52,7 @@ namespace Scheduler{
             CancButton.Enabled = false;
         }
 
-        void ResetEventAdditionFields(){
-            DescriptionTextBox.Text = "Description...";
-            NewEventDatePicker.Value = DateTime.Now;
-            NewEventTimePicker.Value = new DateTime(2013, 1, 1, 8, 0, 0, 0);
-            AddEventButton.Enabled = false;
-        }
-
-        void UpdateCalendar(){
+        public void UpdateCalendar(){
             monthCalendar1.RemoveAllBoldedDates();
             var events = _scheduler.GetActiveEvents();
             foreach (DisplayEvent t in events){
@@ -68,7 +61,7 @@ namespace Scheduler{
             monthCalendar1.UpdateBoldedDates();
         }
 
-        void UpdateSchedulerTable(){
+        public void UpdateSchedulerTable(){
             var events = _scheduler.GetActiveEvents();
             var sorted = events.OrderBy(e => e.EventDateTime).ToArray();
             EventTable.RowCount = sorted.Length;
@@ -111,28 +104,16 @@ namespace Scheduler{
             }
         }
 
+        void AddEventToolStripMenuItemClick(object sender, EventArgs e){
+            _addEventForm = new AddEvent(_scheduler, this);
+        }
+
         #region main ui delegs
 
         void CancelButtonClick(object sender, EventArgs e){
             var eventToCancel = CancellationComboBox.Text;
             _scheduler.CancelEvent(eventToCancel);
             ResetEventCancelFields();
-            UpdateSchedulerTable();
-            UpdateCalendar();
-        }
-
-        void AddEventButtonClick(object sender, EventArgs e){
-            var date = NewEventDatePicker.Value;
-            var time = NewEventTimePicker.Value;
-
-            var eventDatetime = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
-            if (eventDatetime < DateTime.Now){
-                MessageBox.Show("You need to select a date and time that is in the future");
-                return;
-            }
-            _scheduler.AddEvent(DescriptionTextBox.Text, eventDatetime);
-
-            ResetEventAdditionFields();
             UpdateSchedulerTable();
             UpdateCalendar();
         }
@@ -144,12 +125,6 @@ namespace Scheduler{
             CancellationComboBox.DataSource = eventNames;
         }
 
-        void DescriptionTextBoxMouseDown(object sender, MouseEventArgs e){
-            if (DescriptionTextBox.Text.Equals("Description...")){
-                DescriptionTextBox.Text = "";
-            }
-        }
-
         void CancellationComboBoxSelectionChangeCommitted(object sender, EventArgs e){
             UpdateSchedulerTable();
             if (CancellationComboBox.Text == ""){
@@ -157,15 +132,6 @@ namespace Scheduler{
             }
             else{
                 CancButton.Enabled = true;
-            }
-        }
-
-        void DescriptionTextBoxTextChanged(object sender, EventArgs e){
-            if (!DescriptionTextBox.Text.Equals("Description...") && !DescriptionTextBox.Text.Equals("")){
-                AddEventButton.Enabled = true;
-            }
-            else{
-                AddEventButton.Enabled = false;
             }
         }
 

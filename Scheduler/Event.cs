@@ -5,14 +5,14 @@ using System;
 #endregion
 
 namespace Scheduler{
-    internal class Event{
+    public class Event{
         public string Description;
         public DateTime EventDate;
         public bool HasPassed;
         public bool IsCancelled;
     }
 
-    internal class DisplayEvent : IEquatable<DisplayEvent>{
+    public class DisplayEvent : IEquatable<DisplayEvent> {
         public string Date;
         public string Description;
         public DateTime EventDateTime;

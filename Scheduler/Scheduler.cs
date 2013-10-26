@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 #endregion
 
 namespace Scheduler{
-    internal class Scheduler{
+    public class Scheduler{
         const string _savedEventsPath = "events.json";
 
         readonly List<Event> _events;
