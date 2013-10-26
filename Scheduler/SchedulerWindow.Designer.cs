@@ -42,15 +42,23 @@
             this.DateAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeUntil = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CancelEditButton = new System.Windows.Forms.Button();
+            this.SaveChangesButton = new System.Windows.Forms.Button();
+            this.EditTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.EditDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.RemoveEventButton = new System.Windows.Forms.Button();
+            this.EditDescription = new System.Windows.Forms.TextBox();
+            this.EditEventButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.EventPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.CalendarDimensions = new System.Drawing.Size(2, 1);
-            this.monthCalendar1.Location = new System.Drawing.Point(61, 25);
+            this.monthCalendar1.Location = new System.Drawing.Point(14, 25);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 5;
             // 
@@ -73,6 +81,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(596, 24);
             this.menuStrip1.TabIndex = 19;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.Click += new System.EventHandler(this.MenuStrip1Click);
             // 
             // eventsToolStripMenuItem
             // 
@@ -86,7 +95,7 @@
             // addEventToolStripMenuItem
             // 
             this.addEventToolStripMenuItem.Name = "addEventToolStripMenuItem";
-            this.addEventToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addEventToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.addEventToolStripMenuItem.Text = "Add Event";
             this.addEventToolStripMenuItem.Click += new System.EventHandler(this.AddEventToolStripMenuItemClick);
             // 
@@ -94,7 +103,7 @@
             // 
             this.exportEventsToolStripMenuItem.Enabled = false;
             this.exportEventsToolStripMenuItem.Name = "exportEventsToolStripMenuItem";
-            this.exportEventsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportEventsToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.exportEventsToolStripMenuItem.Text = "Export Events";
             // 
             // optionsToolStripMenuItem
@@ -112,6 +121,7 @@
             this.EventPanel.Name = "EventPanel";
             this.EventPanel.Size = new System.Drawing.Size(566, 362);
             this.EventPanel.TabIndex = 20;
+            this.EventPanel.Click += new System.EventHandler(this.EventPanelClick);
             // 
             // EventTable
             // 
@@ -122,7 +132,6 @@
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
             this.EventTable.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.EventTable.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.EventTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.EventTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -133,6 +142,7 @@
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.EventTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.EventTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.EventTable.ColumnHeadersVisible = false;
             this.EventTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Description,
             this.DateAt,
@@ -142,8 +152,8 @@
             dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.MenuHighlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.EventTable.DefaultCellStyle = dataGridViewCellStyle7;
             this.EventTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
@@ -157,9 +167,10 @@
             dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
             this.EventTable.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.EventTable.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.EventTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.EventTable.Size = new System.Drawing.Size(453, 359);
+            this.EventTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.EventTable.Size = new System.Drawing.Size(561, 293);
             this.EventTable.TabIndex = 4;
+            this.EventTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventTableCellClick);
             // 
             // Description
             // 
@@ -201,11 +212,97 @@
             this.TimeUntil.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.TimeUntil.Width = 95;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.CancelEditButton);
+            this.groupBox1.Controls.Add(this.SaveChangesButton);
+            this.groupBox1.Controls.Add(this.EditTimePicker);
+            this.groupBox1.Controls.Add(this.EditDatePicker);
+            this.groupBox1.Controls.Add(this.RemoveEventButton);
+            this.groupBox1.Controls.Add(this.EditDescription);
+            this.groupBox1.Controls.Add(this.EditEventButton);
+            this.groupBox1.Location = new System.Drawing.Point(253, 27);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(330, 128);
+            this.groupBox1.TabIndex = 21;
+            this.groupBox1.TabStop = false;
+            // 
+            // CancelEditButton
+            // 
+            this.CancelEditButton.Location = new System.Drawing.Point(156, 95);
+            this.CancelEditButton.Name = "CancelEditButton";
+            this.CancelEditButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelEditButton.TabIndex = 6;
+            this.CancelEditButton.Text = "Cancel Edit";
+            this.CancelEditButton.UseVisualStyleBackColor = true;
+            this.CancelEditButton.Visible = false;
+            this.CancelEditButton.Click += new System.EventHandler(this.CancelEditButtonClick);
+            // 
+            // SaveChangesButton
+            // 
+            this.SaveChangesButton.Location = new System.Drawing.Point(65, 95);
+            this.SaveChangesButton.Name = "SaveChangesButton";
+            this.SaveChangesButton.Size = new System.Drawing.Size(85, 23);
+            this.SaveChangesButton.TabIndex = 5;
+            this.SaveChangesButton.Text = "Save Changes";
+            this.SaveChangesButton.UseVisualStyleBackColor = true;
+            this.SaveChangesButton.Visible = false;
+            this.SaveChangesButton.Click += new System.EventHandler(this.SaveChangesButtonClick);
+            // 
+            // EditTimePicker
+            // 
+            this.EditTimePicker.Enabled = false;
+            this.EditTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.EditTimePicker.Location = new System.Drawing.Point(6, 65);
+            this.EditTimePicker.Name = "EditTimePicker";
+            this.EditTimePicker.ShowUpDown = true;
+            this.EditTimePicker.Size = new System.Drawing.Size(94, 20);
+            this.EditTimePicker.TabIndex = 4;
+            // 
+            // EditDatePicker
+            // 
+            this.EditDatePicker.Enabled = false;
+            this.EditDatePicker.Location = new System.Drawing.Point(6, 39);
+            this.EditDatePicker.Name = "EditDatePicker";
+            this.EditDatePicker.Size = new System.Drawing.Size(200, 20);
+            this.EditDatePicker.TabIndex = 3;
+            // 
+            // RemoveEventButton
+            // 
+            this.RemoveEventButton.Enabled = false;
+            this.RemoveEventButton.Location = new System.Drawing.Point(237, 95);
+            this.RemoveEventButton.Name = "RemoveEventButton";
+            this.RemoveEventButton.Size = new System.Drawing.Size(87, 23);
+            this.RemoveEventButton.TabIndex = 1;
+            this.RemoveEventButton.Text = "Remove Event";
+            this.RemoveEventButton.UseVisualStyleBackColor = true;
+            this.RemoveEventButton.Click += new System.EventHandler(this.RemoveEventButtonClick);
+            // 
+            // EditDescription
+            // 
+            this.EditDescription.Enabled = false;
+            this.EditDescription.Location = new System.Drawing.Point(6, 13);
+            this.EditDescription.Name = "EditDescription";
+            this.EditDescription.Size = new System.Drawing.Size(306, 20);
+            this.EditDescription.TabIndex = 0;
+            // 
+            // EditEventButton
+            // 
+            this.EditEventButton.Enabled = false;
+            this.EditEventButton.Location = new System.Drawing.Point(156, 95);
+            this.EditEventButton.Name = "EditEventButton";
+            this.EditEventButton.Size = new System.Drawing.Size(75, 23);
+            this.EditEventButton.TabIndex = 2;
+            this.EditEventButton.Text = "Edit Event";
+            this.EditEventButton.UseVisualStyleBackColor = true;
+            this.EditEventButton.Click += new System.EventHandler(this.EditEventButtonClick);
+            // 
             // SchedulerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 573);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.EventPanel);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.monthCalendar1);
@@ -215,11 +312,14 @@
             this.Activated += new System.EventHandler(this.SchedulerWindowActivated);
             this.Deactivate += new System.EventHandler(this.SchedulerWindowDeactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SchedulerWindowFormClosing);
+            this.Click += new System.EventHandler(this.SchedulerWindowClick);
             this.Resize += new System.EventHandler(this.SchedulerWindowResize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.EventPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.EventTable)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -236,10 +336,18 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.Panel EventPanel;
         private System.Windows.Forms.DataGridView EventTable;
+        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateAt;
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeAt;
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeUntil;
+        private System.Windows.Forms.DateTimePicker EditTimePicker;
+        private System.Windows.Forms.DateTimePicker EditDatePicker;
+        private System.Windows.Forms.Button EditEventButton;
+        private System.Windows.Forms.Button RemoveEventButton;
+        private System.Windows.Forms.TextBox EditDescription;
+        private System.Windows.Forms.Button SaveChangesButton;
+        private System.Windows.Forms.Button CancelEditButton;
     }
 }
 
