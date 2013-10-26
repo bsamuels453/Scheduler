@@ -82,6 +82,19 @@ namespace Scheduler{
             SaveEvents();
         }
 
+        public void EditEvent(string curDescription, DateTime curTime, string newDescription, DateTime newTime){
+            bool eventFound = false;
+            foreach (var @event in _events) {
+                if (@event.Description.Equals(curDescription) && @event.EventDate == curTime) {
+                    @event.Description = newDescription;
+                    @event.EventDate = newTime;
+                    eventFound = true;
+                }
+            }
+            Debug.Assert(eventFound);
+            SaveEvents();
+        }
+
         void SaveEvents(){
             var sw = new StreamWriter(_savedEventsPath);
             var serialized = JsonConvert.SerializeObject(_events, Formatting.Indented);
