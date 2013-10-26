@@ -70,10 +70,10 @@ namespace Scheduler{
             SaveEvents();
         }
 
-        public void CancelEvent(string description){
+        public void CancelEvent(string description, DateTime time){
             bool eventFound = false;
             foreach (var @event in _events){
-                if (@event.Description.Equals(description)){
+                if (@event.Description.Equals(description) && @event.EventDate == time){
                     @event.IsCancelled = true;
                     eventFound = true;
                 }
