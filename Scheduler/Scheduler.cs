@@ -10,13 +10,13 @@ using Newtonsoft.Json;
 #endregion
 
 namespace Scheduler{
-    internal class Scheduler{
+    public class Scheduler{
         const string _savedEventsPath = "events.json";
 
         readonly List<Event> _events;
 
         public Scheduler(){
-            if (File.Exists(_savedEventsPath)) {
+            if (File.Exists(_savedEventsPath)){
                 _events = LoadEvents();
             }
             else{
@@ -42,19 +42,44 @@ namespace Scheduler{
             foreach (var @event in activeEvents){
                 var displayEvent = new DisplayEvent();
                 displayEvent.Description = @event.Description;
-                var time = DateTime.ParseExact(@event.EventDate.TimeOfDay.ToString(), "HH:mm:ss", null).ToString("hh:mm tt");
-                displayEvent.Time = time;
-                var date = @event.EventDate.Month + "/" + @event.EventDate.Day + "/" + @event.EventDate.Year;
-                displayEvent.Date = date;
+
+                displayEvent.Time = GetPrettyTime(@event.EventDate);
+                displayEvent.Date = GetPrettyDate(@event.EventDate);
 
                 var timeUntil = @event.EventDate - DateTime.Now;
-                var timeUntilStr = timeUntil.Days + "d " + timeUntil.Hours + "h " + timeUntil.Minutes + "m " + timeUntil.Seconds + "s";
+                var timeUntilStr = GetPrettyTimeDiff(timeUntil);
                 displayEvent.TimeUntil = timeUntilStr;
                 displayEvent.EventDateTime = @event.EventDate;
 
                 displayEvents.Add(displayEvent);
             }
             return displayEvents;
+        }
+
+        string GetPrettyDate(DateTime date){
+            return date.Month + "/" + date.Day + "/" + (date.Year - 2000);
+        }
+
+        string GetPrettyTime(DateTime time){
+            var hour = time.ToString("hh");
+            var minute = time.ToString("mm");
+            var daybreak = time.ToString("tt");
+            return hour + ":" + minute + " " + daybreak;
+        }
+
+        string GetPrettyTimeDiff(TimeSpan diff){
+            var ret = "";
+            if (diff.Days > 0){
+                ret += diff.Days + "d ";
+            }
+            if (diff.Hours > 0) {
+                ret += diff.Hours + "h ";
+            }
+            if (diff.Minutes > 0) {
+                ret += diff.Minutes + "m ";
+            }
+            ret +=  diff.Seconds + "s";
+            return ret;
         }
 
         public void AddEvent(string description, DateTime timeAt){
@@ -70,11 +95,24 @@ namespace Scheduler{
             SaveEvents();
         }
 
-        public void CancelEvent(string description){
+        public void CancelEvent(string description, DateTime time){
             bool eventFound = false;
             foreach (var @event in _events){
-                if (@event.Description.Equals(description)){
+                if (@event.Description.Equals(description) && @event.EventDate == time){
                     @event.IsCancelled = true;
+                    eventFound = true;
+                }
+            }
+            Debug.Assert(eventFound);
+            SaveEvents();
+        }
+
+        public void EditEvent(string curDescription, DateTime curTime, string newDescription, DateTime newTime){
+            bool eventFound = false;
+            foreach (var @event in _events){
+                if (@event.Description.Equals(curDescription) && @event.EventDate == curTime){
+                    @event.Description = newDescription;
+                    @event.EventDate = newTime;
                     eventFound = true;
                 }
             }

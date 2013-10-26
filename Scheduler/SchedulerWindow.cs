@@ -12,28 +12,35 @@ using System.Windows.Forms;
 
 namespace Scheduler{
     public partial class SchedulerWindow : Form{
+        const int _eventTableRowHeight = 22;
+        readonly Dictionary<int, Tuple<string, DateTime>> _buttonToEventLookup;
         readonly Task _dailyReminderTask;
         readonly DataGridViewCellStyle _defaultStyle;
         readonly Scheduler _scheduler;
 
         readonly DataGridViewCellStyle _urgentStyle;
         readonly DataGridViewCellStyle _warningStyle;
+        AddEvent _addEventForm;
         Task _fieldUpdateTask;
         bool _killFieldUpdateTask;
 
         public SchedulerWindow(){
+            _warningsToDeploy = new List<DisplayEvent>();
+            _deployedWarnings = new List<DisplayEvent>();
+            _buttonToEventLookup = new Dictionary<int, Tuple<string, DateTime>>();
+            _scheduler = new Scheduler();
+
             InitializeComponent();
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            _scheduler = new Scheduler();
             UpdateSchedulerTable();
             UpdateCalendar();
-            ResetEventAdditionFields();
-            ResetEventCancelFields();
+
+            ClearEventDetails();
+
             _dailyReminderTask = new Task(DailyReminder);
             _dailyReminderTask.Start();
-            _warningsToDeploy = new List<DisplayEvent>();
-            _deployedWarnings = new List<DisplayEvent>();
+
 
             _urgentStyle = new DataGridViewCellStyle();
             _urgentStyle.BackColor = Color.LightPink;
@@ -44,22 +51,10 @@ namespace Scheduler{
             _defaultStyle = new DataGridViewCellStyle();
             _defaultStyle.BackColor = Color.LightGreen;
             _defaultStyle.SelectionBackColor = Color.LightGreen;
+            EventTable.ClearSelection();
         }
 
-        void ResetEventCancelFields(){
-            CancellationComboBox.DataSource = null;
-            CancellationComboBox.SelectedIndex = -1;
-            CancButton.Enabled = false;
-        }
-
-        void ResetEventAdditionFields(){
-            DescriptionTextBox.Text = "Description...";
-            NewEventDatePicker.Value = DateTime.Now;
-            NewEventTimePicker.Value = new DateTime(2013, 1, 1, 8, 0, 0, 0);
-            AddEventButton.Enabled = false;
-        }
-
-        void UpdateCalendar(){
+        public void UpdateCalendar(){
             monthCalendar1.RemoveAllBoldedDates();
             var events = _scheduler.GetActiveEvents();
             foreach (DisplayEvent t in events){
@@ -68,7 +63,9 @@ namespace Scheduler{
             monthCalendar1.UpdateBoldedDates();
         }
 
-        void UpdateSchedulerTable(){
+        public void UpdateSchedulerTable(){
+            int numPrevEvents = EventTable.RowCount;
+            _scheduler.RefreshActiveEvents();
             var events = _scheduler.GetActiveEvents();
             var sorted = events.OrderBy(e => e.EventDateTime).ToArray();
             EventTable.RowCount = sorted.Length;
@@ -99,6 +96,16 @@ namespace Scheduler{
                 EventTable[2, i].Value = sorted[i].Time;
                 EventTable[3, i].Value = sorted[i].TimeUntil;
             }
+            if (numPrevEvents != EventTable.RowCount){
+                ClearEventDetails();
+                EventTable.ClearSelection();
+                EventTable.Height = EventTable.RowCount*_eventTableRowHeight;
+                _buttonToEventLookup.Clear();
+                for (int i = 0; i < sorted.Length; i++){
+                    EventTable[0, i].Tag = i;
+                    _buttonToEventLookup.Add(i, new Tuple<string, DateTime>(sorted[i].Description, sorted[i].EventDateTime));
+                }
+            }
         }
 
         void UpdateFieldsLoop(){
@@ -111,65 +118,110 @@ namespace Scheduler{
             }
         }
 
-        #region main ui delegs
-
-        void CancelButtonClick(object sender, EventArgs e){
-            var eventToCancel = CancellationComboBox.Text;
-            _scheduler.CancelEvent(eventToCancel);
-            ResetEventCancelFields();
-            UpdateSchedulerTable();
-            UpdateCalendar();
+        void EventTableCellClick(object sender, DataGridViewCellEventArgs e){
+            var selectedCells = EventTable.SelectedCells;
+            var tag = (int) selectedCells[0].Tag;
+            var details = _buttonToEventLookup[tag];
+            var description = details.Item1;
+            var datetime = details.Item2;
+            EditDescription.Text = description;
+            EditDatePicker.Value = datetime;
+            EditTimePicker.Value = datetime;
+            EditDatePicker.MinDate = DateTime.Now;
+            EditTimePicker.MinDate = DateTime.Now;
+            EnableEventDetailFields();
         }
 
-        void AddEventButtonClick(object sender, EventArgs e){
-            var date = NewEventDatePicker.Value;
-            var time = NewEventTimePicker.Value;
+        void EnableEventDetailFields(){
+            EditDescription.Visible = true;
+            EditDatePicker.Visible = true;
+            EditTimePicker.Visible = true;
+            EditEventButton.Visible = true;
+            RemoveEventButton.Visible = true;
+            EditEventButton.Enabled = true;
+            RemoveEventButton.Enabled = true;
+        }
+
+        void DisableEventDetailFields(){
+            RemoveEventButton.Enabled = false;
+            EditEventButton.Enabled = false;
+            EditDescription.Visible = false;
+            EditDatePicker.Visible = false;
+            EditTimePicker.Visible = false;
+            EditEventButton.Visible = false;
+            RemoveEventButton.Visible = false;
+        }
+
+        void EnableEditFields(){
+            EditEventButton.Visible = false;
+            CancelEditButton.Visible = true;
+            SaveChangesButton.Visible = true;
+            RemoveEventButton.Enabled = false;
+            EditDatePicker.Enabled = true;
+            EditTimePicker.Enabled = true;
+            EditDescription.Enabled = true;
+        }
+
+        void DisableEditFields(){
+            EditEventButton.Visible = true;
+            CancelEditButton.Visible = false;
+            SaveChangesButton.Visible = false;
+            RemoveEventButton.Enabled = true;
+            EditDatePicker.Enabled = false;
+            EditTimePicker.Enabled = false;
+            EditDescription.Enabled = false;
+        }
+
+        void ClearEventDetails(){
+            EditDescription.Text = "";
+            DisableEditFields();
+            DisableEventDetailFields();
+        }
+
+        void EditEventButtonClick(object sender, EventArgs e){
+            EnableEditFields();
+        }
+
+        void RemoveEventButtonClick(object sender, EventArgs e){
+            var eventDescr = EditDescription.Text;
+            var eventDate = EditDatePicker.Value;
+            var result = MessageBox.Show("Do you REALLY want to cancel " + eventDescr + "?!", "", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes){
+                _scheduler.CancelEvent(eventDescr, eventDate);
+                UpdateSchedulerTable();
+                UpdateCalendar();
+                EventTable.ClearSelection();
+                ClearEventDetails();
+            }
+        }
+
+        void SaveChangesButtonClick(object sender, EventArgs e){
+            var date = EditDatePicker.Value;
+            var time = EditTimePicker.Value;
+            var newDescr = EditDescription.Text;
 
             var eventDatetime = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
             if (eventDatetime < DateTime.Now){
                 MessageBox.Show("You need to select a date and time that is in the future");
                 return;
             }
-            _scheduler.AddEvent(DescriptionTextBox.Text, eventDatetime);
-
-            ResetEventAdditionFields();
+            var tag = (int) EventTable.SelectedCells[0].Tag;
+            var origDescr = _buttonToEventLookup[tag].Item1;
+            var origTime = _buttonToEventLookup[tag].Item2;
+            _scheduler.EditEvent(origDescr, origTime, newDescr, eventDatetime);
+            DisableEditFields();
             UpdateSchedulerTable();
             UpdateCalendar();
         }
 
-        void CancellationComboBoxMouseDown(object sender, MouseEventArgs _){
-            var events = _scheduler.GetActiveEvents();
-            var eventNames = events.Select(e => e.Description).ToList();
-            eventNames.Insert(0, "");
-            CancellationComboBox.DataSource = eventNames;
+        void CancelEditButtonClick(object sender, EventArgs e){
+            var tag = (int) EventTable.SelectedCells[0].Tag;
+            var eventData = _buttonToEventLookup[tag];
+            EditDescription.Text = eventData.Item1;
+            EditDatePicker.Value = eventData.Item2;
+            EditTimePicker.Value = eventData.Item2;
+            DisableEditFields();
         }
-
-        void DescriptionTextBoxMouseDown(object sender, MouseEventArgs e){
-            if (DescriptionTextBox.Text.Equals("Description...")){
-                DescriptionTextBox.Text = "";
-            }
-        }
-
-        void CancellationComboBoxSelectionChangeCommitted(object sender, EventArgs e){
-            UpdateSchedulerTable();
-            if (CancellationComboBox.Text == ""){
-                CancButton.Enabled = false;
-            }
-            else{
-                CancButton.Enabled = true;
-            }
-        }
-
-        void DescriptionTextBoxTextChanged(object sender, EventArgs e){
-            if (!DescriptionTextBox.Text.Equals("Description...") && !DescriptionTextBox.Text.Equals("")){
-                AddEventButton.Enabled = true;
-            }
-            else{
-                AddEventButton.Enabled = false;
-            }
-        }
-
-        #endregion
 
         #region window/notifyicon stuff
 
@@ -194,12 +246,20 @@ namespace Scheduler{
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
+            EventTable.ClearSelection();
+            ClearEventDetails();
+            UpdateSchedulerTable();
+            UpdateCalendar();
         }
 
         void NotifyIcon1MouseDoubleClick(object sender, MouseEventArgs e){
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
+            EventTable.ClearSelection();
+            ClearEventDetails();
+            UpdateSchedulerTable();
+            UpdateCalendar();
         }
 
         void SchedulerWindowResize(object sender, EventArgs e){
@@ -209,7 +269,10 @@ namespace Scheduler{
             }
             else if (FormWindowState.Normal == this.WindowState){
                 NotifyIcon.Visible = false;
-                //Application.OpenForms["PikaForm"].BringToFront();
+                EventTable.ClearSelection();
+                ClearEventDetails();
+                UpdateSchedulerTable();
+                UpdateCalendar();
             }
         }
 
@@ -217,6 +280,33 @@ namespace Scheduler{
             this.Show();
             this.WindowState = FormWindowState.Normal;
             NotifyIcon.Visible = false;
+            EventTable.ClearSelection();
+            ClearEventDetails();
+            UpdateSchedulerTable();
+            UpdateCalendar();
+        }
+
+        void EventPanelClick(object sender, EventArgs e){
+            EventTable.ClearSelection();
+            ClearEventDetails();
+        }
+
+        void SchedulerWindowClick(object sender, EventArgs e){
+            EventTable.ClearSelection();
+            ClearEventDetails();
+        }
+
+        void MenuStrip1Click(object sender, EventArgs e){
+            EventTable.ClearSelection();
+            ClearEventDetails();
+        }
+
+        #endregion
+
+        #region main ui delegs
+
+        void AddEventToolStripMenuItemClick(object sender, EventArgs e){
+            _addEventForm = new AddEvent(_scheduler, this);
         }
 
         #endregion
