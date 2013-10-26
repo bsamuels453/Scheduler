@@ -124,6 +124,8 @@ namespace Scheduler{
                 editButton.Size = _editButtonsize;
                 editButton.Text = _editButtonText;
                 editButton.Name = i.ToString();
+                editButton.Click += OnEditButtonClicked;
+                editButton.Enabled = false;
                 _editButtons.Add(editButton);
 
                 var removeButton = new Button();
@@ -132,6 +134,7 @@ namespace Scheduler{
                 removeButton.Size = _removeButtonsize;
                 removeButton.Text = _removeButtonText;
                 removeButton.Name = i.ToString();
+                removeButton.Click += OnCancelButtonClicked;
                 _removeButtons.Add(removeButton);
 
                 _buttonToEventLookup.Add
@@ -159,6 +162,21 @@ namespace Scheduler{
 
         void AddEventToolStripMenuItemClick(object sender, EventArgs e){
             _addEventForm = new AddEvent(_scheduler, this);
+        }
+
+        void OnCancelButtonClicked(object sender, EventArgs e){
+            var eventId = int.Parse(((Button) sender).Name);
+            var eventDescr = _buttonToEventLookup[eventId].Item1;
+            var eventDate = _buttonToEventLookup[eventId].Item2;
+            var result = MessageBox.Show("Do you REALLY want to cancel " + eventDescr + "?", "", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes){
+                _scheduler.CancelEvent(eventDescr, eventDate);
+                UpdateSchedulerTable();
+                UpdateCalendar();
+            }
+        }
+
+        void OnEditButtonClicked(object sender, EventArgs e){
         }
 
         /*
