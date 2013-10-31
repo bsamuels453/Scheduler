@@ -19,7 +19,7 @@ namespace Scheduler{
             _schedulerForm = schedulerForm;
             DescriptionTextBox.Text = _enterDescription;
             NewEventDatePicker.MinDate = DateTime.Now;
-            NewEventTimePicker.MinDate = DateTime.Now;
+            //NewEventTimePicker.MinDate = DateTime.Now;
 
             this.ShowDialog();
         }
