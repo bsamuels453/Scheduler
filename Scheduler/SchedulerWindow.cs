@@ -33,6 +33,7 @@ namespace Scheduler{
             InitializeComponent();
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
             UpdateSchedulerTable(fieldEdited: true);
             UpdateCalendar();
 
@@ -52,6 +53,11 @@ namespace Scheduler{
             _defaultStyle.BackColor = Color.LightGreen;
             _defaultStyle.SelectionBackColor = Color.LightGreen;
             EventTable.ClearSelection();
+        }
+
+        protected override void OnShown(EventArgs e){
+            this.EventTable.Focus();
+            base.OnShown(e);
         }
 
         public void UpdateCalendar(){
