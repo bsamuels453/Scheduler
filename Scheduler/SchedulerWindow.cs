@@ -33,7 +33,7 @@ namespace Scheduler{
             InitializeComponent();
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            UpdateSchedulerTable();
+            UpdateSchedulerTable(fieldEdited: true);
             UpdateCalendar();
 
             ClearEventDetails();
@@ -63,7 +63,11 @@ namespace Scheduler{
             monthCalendar1.UpdateBoldedDates();
         }
 
-        public void UpdateSchedulerTable(){
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fieldEdited">whether or not any of the non-time fields may have changed.</param>
+        public void UpdateSchedulerTable(bool fieldEdited){
             int numPrevEvents = EventTable.RowCount;
             _scheduler.RefreshActiveEvents();
             var events = _scheduler.GetActiveEvents();
@@ -96,7 +100,7 @@ namespace Scheduler{
                 EventTable[2, i].Value = sorted[i].Time;
                 EventTable[3, i].Value = sorted[i].TimeUntil;
             }
-            if (numPrevEvents != EventTable.RowCount){
+            if (fieldEdited) {
                 ClearEventDetails();
                 EventTable.ClearSelection();
                 EventTable.Height = EventTable.RowCount*_eventTableRowHeight;
@@ -114,7 +118,7 @@ namespace Scheduler{
                 if (_killFieldUpdateTask){
                     break;
                 }
-                this.BeginInvoke((Action) UpdateSchedulerTable);
+                this.BeginInvoke((Action) (() => UpdateSchedulerTable(fieldEdited: false)));
             }
         }
 
@@ -188,7 +192,7 @@ namespace Scheduler{
             var result = MessageBox.Show("Do you REALLY want to cancel " + eventDescr + "?!", "", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes){
                 _scheduler.CancelEvent(eventDescr, eventDate);
-                UpdateSchedulerTable();
+                UpdateSchedulerTable(fieldEdited: true);
                 UpdateCalendar();
                 EventTable.ClearSelection();
                 ClearEventDetails();
@@ -210,7 +214,7 @@ namespace Scheduler{
             var origTime = _buttonToEventLookup[tag].Item2;
             _scheduler.EditEvent(origDescr, origTime, newDescr, eventDatetime);
             DisableEditFields();
-            UpdateSchedulerTable();
+            UpdateSchedulerTable(fieldEdited: true);
             UpdateCalendar();
         }
 
@@ -248,7 +252,7 @@ namespace Scheduler{
             NotifyIcon.Visible = false;
             EventTable.ClearSelection();
             ClearEventDetails();
-            UpdateSchedulerTable();
+            UpdateSchedulerTable(fieldEdited: false);
             UpdateCalendar();
         }
 
@@ -258,7 +262,7 @@ namespace Scheduler{
             NotifyIcon.Visible = false;
             EventTable.ClearSelection();
             ClearEventDetails();
-            UpdateSchedulerTable();
+            UpdateSchedulerTable(fieldEdited: false);
             UpdateCalendar();
         }
 
@@ -271,7 +275,7 @@ namespace Scheduler{
                 NotifyIcon.Visible = false;
                 EventTable.ClearSelection();
                 ClearEventDetails();
-                UpdateSchedulerTable();
+                UpdateSchedulerTable(fieldEdited: false);
                 UpdateCalendar();
             }
         }
@@ -282,7 +286,7 @@ namespace Scheduler{
             NotifyIcon.Visible = false;
             EventTable.ClearSelection();
             ClearEventDetails();
-            UpdateSchedulerTable();
+            UpdateSchedulerTable(fieldEdited: false);
             UpdateCalendar();
         }
 
