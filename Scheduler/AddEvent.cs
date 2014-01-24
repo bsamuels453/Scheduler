@@ -34,7 +34,7 @@ namespace Scheduler{
                 return;
             }
             _scheduler.AddEvent(DescriptionTextBox.Text, eventDatetime);
-            _schedulerForm.Invoke(new Action(_schedulerForm.UpdateSchedulerTable));
+            _schedulerForm.Invoke(new Action(() => _schedulerForm.UpdateSchedulerTable(fieldEdited: true)));
             _schedulerForm.Invoke(new Action(_schedulerForm.UpdateCalendar));
             this.Close();
         }
