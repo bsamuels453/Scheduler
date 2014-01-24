@@ -100,7 +100,7 @@ namespace Scheduler{
                 EventTable[2, i].Value = sorted[i].Time;
                 EventTable[3, i].Value = sorted[i].TimeUntil;
             }
-            if (fieldEdited) {
+            if (fieldEdited){
                 ClearEventDetails();
                 EventTable.ClearSelection();
                 EventTable.Height = EventTable.RowCount*_eventTableRowHeight;
@@ -134,6 +134,7 @@ namespace Scheduler{
             EditDatePicker.MinDate = DateTime.Now;
             EditTimePicker.MinDate = DateTime.Now;
             EnableEventDetailFields();
+            DisableEditFields();
         }
 
         void EnableEventDetailFields(){
