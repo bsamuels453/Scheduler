@@ -72,13 +72,13 @@ namespace Scheduler{
             if (diff.Days > 0){
                 ret += diff.Days + "d ";
             }
-            if (diff.Hours > 0) {
+            if (diff.Hours > 0){
                 ret += diff.Hours + "h ";
             }
-            if (diff.Minutes > 0) {
+            if (diff.Minutes > 0){
                 ret += diff.Minutes + "m ";
             }
-            ret +=  diff.Seconds + "s";
+            ret += diff.Seconds + "s";
             return ret;
         }
 
