@@ -1,7 +1,7 @@
 Scheduler 1.1.2
 =========
 Assists in scheduling and keeping track of events/appointments/meetings.
-I made this because programs such as google calendar fail to display upcoming events in such a way where it is easy to plan when to do homework/projects/whatever.
+I made this because programs such as google calendar fail to display upcoming events in such a way where it is easy to plan when to do homework/projects/whatever
 
 Event data is stored in events.json which is stored in the binary's directory.
 
