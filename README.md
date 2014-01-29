@@ -1,4 +1,4 @@
-Scheduler 1.1.2
+Scheduler 1.1.3
 =========
 Assists in scheduling and keeping track of events/appointments/meetings.
 I made this because programs such as google calendar fail to display upcoming events in such a way where it is easy to plan when to do homework/projects/whatever
@@ -7,6 +7,10 @@ Event data is stored in events.json which is stored in the binary's directory.
 
 Changelog
 =========
+
+1.1.3:
+
+-Fixing an exception that may occur after refocusing the scheduler after a recent event has expired
 
 1.1.2:
 
