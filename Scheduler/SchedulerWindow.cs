@@ -75,7 +75,10 @@ namespace Scheduler{
         /// <param name="fieldEdited">whether or not any of the non-time fields may have changed.</param>
         public void UpdateSchedulerTable(bool fieldEdited){
             int numPrevEvents = EventTable.RowCount;
-            _scheduler.RefreshActiveEvents();
+            var eventsHavePassed = _scheduler.RefreshActiveEvents();
+            if (fieldEdited == false && eventsHavePassed){
+                fieldEdited = true;
+            }
             var events = _scheduler.GetActiveEvents();
             var sorted = events.OrderBy(e => e.EventDateTime).ToArray();
             EventTable.RowCount = sorted.Length;
@@ -237,6 +240,7 @@ namespace Scheduler{
         #region window/notifyicon stuff
 
         void SchedulerWindowActivated(object sender, EventArgs e){
+            UpdateSchedulerTable(fieldEdited: true);
             _fieldUpdateTask = new Task(UpdateFieldsLoop);
             _killFieldUpdateTask = false;
             _fieldUpdateTask.Start();

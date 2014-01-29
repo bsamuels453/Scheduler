@@ -24,7 +24,8 @@ namespace Scheduler{
             }
         }
 
-        public void RefreshActiveEvents(){
+        public bool RefreshActiveEvents(){
+            bool eventsHavePassed = false;
             foreach (var e in _events){
                 if (e.HasPassed)
                     continue;
@@ -32,8 +33,10 @@ namespace Scheduler{
                 var now = DateTime.Now;
                 if (e.EventDate < now){
                     e.HasPassed = true;
+                    eventsHavePassed = true;
                 }
             }
+            return eventsHavePassed;
         }
 
         public List<DisplayEvent> GetActiveEvents(){
